@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    div.tooltip {
+      color: #222;
+      background-color: #fff;
+      padding: .5em;
+      text-shadow: #f5f5f5 0 1px 0;
+      border-radius: 2px;
+      opacity: 0.9;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div>
+    <input id="slider" type="range" value="1" min="1" max="52" step="1" />
+    <span id="week">week</span>
+  </div>
+
+  <script>
+    var width = 700,
+      height = 580;
+
+    var svg = d3.select("body")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    var g = svg.append("g");
+
+    var color = d3.scaleQuantize()
+      .range(["rgb(237,248,233)",
+        "rgb(186,228,179)",
+        "rgb(116,196,118)",
+        "rgb(49,163,84)",
+        "rgb(0,109,44)"
+      ]);
+
+    var projection = d3.geoConicConformal().center([2.8,
+      48.6
+    ]).scale(
+      20000);
+    var path = d3.geoPath() // d3.geo.path avec d3 version 3
+      .projection(projection);
+
+    var tooltip = d3.select('body').append('div')
+      .attr('class', 'hidden tooltip');
+
+    function known(d, week)
+    {
+      if (d.properties.tab != undefined)
+      {
+        var val = d.properties.tab[week];
+      }
+      return val
+    };
+
+    d3.csv("grippe.csv", function(data)
+    {
+      //Set input domain for color scale
+      color.domain([0, 200
+        //d3.min(data, function(d) { return d.value; }),
+        //d3.max(data, function(d) { return d.value; })
+      ]);
+
+      var weeksArray = Object.keys(data[0]);
+      var France;
+
+      //partie 4
+      d3.json("regions.json", function(json)
+      {
+
+        d3.select('#week').html(Object.keys(data[0])[1]);
+
+        d3.select("#slider").on("input", function()
+        {
+          updateViz(+this.value);
+        });
+
+        //On fusionne les donnees avec le GeoJSON des regions
+        for (var i = 0; i < data.length; ++i)
+        {
+          for (var j = 0; j < json.features.length; ++j)
+          {
+            //find name dataRegion in json file 
+            var jsonRegion = json.features[j].properties.nom;
+            if (data[i].region == jsonRegion)
+            {
+              json.features[j].properties.tab = Object.values(data[i]);
+              //stop because result found
+              break;
+            }
+          }
+        }
+
+        // UPDATE : week and map 
+        function updateViz(val)
+        {
+          d3.select('#week').html(weeksArray[val]);
+          drawMap(val);
+        };
+
+        France = json
+
+        g.selectAll("path")
+          .data(json.features)
+          .enter()
+          .append("path")
+          .attr("d", path);
+
+        drawMap(1);
+      });
+
+      // FONCTION DRAWMAP STARTS HERE 
+      function drawMap(value)
+      {
+
+        carte = g.selectAll("path")
+          .data(France.features)
+          .on('mousemove', function(d)
+          {
+            var mouse = d3.mouse(g.node()).map(function(d)
+            {
+              return parseInt(d);
+            });
+            tooltip.classed('hidden', false)
+              .attr('style', 'left:' + (mouse[0] + 15) +
+                'px; top:' + (mouse[1] - 35) + 'px')
+              .html(d.properties.nom + "<br/>" + known(d, value));
+          })
+          .on('mouseout', function()
+          {
+            tooltip.classed('hidden', true);
+          });
+
+        //update map 
+        carte
+          .attr("class", "update")
+          .style("fill", function(d)
+          {
+            // get value found above
+            var tab = d.properties.tab;
+            if (tab)
+            {
+              return color(tab[value]);
+            }
+            else
+            {
+              // if no value matching, other color 
+              return "#ccc";
+            }
+          })
+
+        // draw map for the 1st time 
+        carte.selectAll("path")
+          .enter()
+          .data(France.features)
+          .append("path")
+          .attr("class", "enter")
+          .attr("d", path)
+          .style("fill", function(d)
+          {
+            // get value found above
+            var tab = d.properties.tab;
+            if (tab)
+            {
+              return color(tab[value]);
+            }
+            else
+            {
+              // if no value matching, other color 
+              return "#ccc";
+            }
+          })
+      }
+    });
+  </script>
+</body>
