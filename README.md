@@ -3,6 +3,7 @@ Projet de Data Vizualisation - Master 2 - Année 2017/2018
 
 lien jeu de donnée :
 https://data.iledefrance.fr/explore/dataset/accidentologie-paris/
+https://github.com/gregoiredavid/france-geojson/blob/master/regions/ile-de-france/departements-ile-de-france.geojson
 
 lien rapport intermédiaire :
 https://www.overleaf.com/12479450qzvmwmdzwthb
