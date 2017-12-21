@@ -55,20 +55,20 @@
             return val
          };
 
-         d3.json("./data/accidentologie-paris.geojson", function(data) {
+         d3.json("data/accidentologie-paris.geojson", function(data) {
             //Set input domain for color scale
             color.domain([0, 200
                //d3.min(data, function(d) { return d.value; }),
                //d3.max(data, function(d) { return d.value; })
             ]);
 
-            var weeksArray = Object.keys(data[0]);
+            var weeksArray = Object.keys(data.features[0]);            
             var France;
 
             //partie 4
-            d3.json("./data/arrondissements-ile-de-france.geojson", function(json) {
+            d3.json("data/arrondissements-ile-de-france.geojson", function(json) {
 
-               d3.select('#week').html(Object.keys(data[0])[1]);
+               d3.select('#week').html(Object.keys(data.features[0])[1]);
 
                d3.select("#slider").on("input", function() {
                   updateViz(+this.value);
