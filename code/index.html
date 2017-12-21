@@ -74,7 +74,7 @@
        return val
     };
  
-     d3.json("accidentologie-paris.json", function(data)
+     d3.json("data/accidentologie-paris.json", function(data)
      {
        //Set input domain for color scale
        color.domain([0, 200
@@ -86,7 +86,7 @@
        var France;
  
        //partie 4
-       d3.json("arrondissements-ile-de-france.geojson", function(json)
+       d3.json("data/arrondissements-ile-de-france.geojson", function(json)
        {
  
          d3.select('#week').html(Object.keys(data[0])[1]);
