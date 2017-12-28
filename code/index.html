@@ -3,7 +3,7 @@
 
    <head>
       <meta charset="utf-8">
-      <title>D3: Setting path fills</title>
+      <title>Accidentologie Paris</title>
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <style type="text/css">
          /* No style rules here yet */
@@ -40,7 +40,7 @@
          var projection = d3.geoConicConformal().center([2.287592,
             48.862725
          ]).scale(
-            25000);
+            10000);
 
          var path = d3.geoPath() // d3.geo.path avec d3 version 3
             .projection(projection);
@@ -54,8 +54,72 @@
             }
             return val
          };
+         
+         
+         // Affecte un accident a une zone
+         function affectZone(accident, rayon) {
+         	for(var i=0; i < zones.length; ++i) {
+         		center = zones[i].center;
+         		x = accident.wgs[0];
+         		y = accident.wgs[1];
+		     	// check coordonnee en X et Y
+		     	if(x <= center[0]+rayon && x >= center[0]-rayon && y <= center[1]+rayon && y >= center[1]-rayon) {
+	     			liste_accidents.push({ "zone": i, "accident": accident });
+	     			return 0;
+		     	}
+			}
+			
+			// Aucune zone ne convient, on en creer donc une nouvelle
+			zones.push({ "center": accident.wgs, "stats" : { "nbAcc": 0, "Indem": 0, "BL": 0, "BH": 0  } });
+			id = zones.length-1;
+			liste_accidents.push({ "zone": id, "accident": accident });
+         }
+         
+         
+         // Recupere toutes les zones d'accident
+         function getZones(accidents, rayon) {
+         	// Creation des zones d'accident
+	     	for(var i = 0; i < accidents.length; ++i) {
+	     		id = affectZone(accidents[i].properties, rayon);
+	     	}
+	     	// Ajout des statistiques aux zones
+	     	for(var i = 0; i < liste_accidents.length; ++i) {
+	     		// Mise a jour du nombre d'accident par zone
+	     		zones[liste_accidents[i].zone].stats.nbAcc++;
+	     		// Mise a jour de la gravite des blessures lors des accidents d'une zone (Indem, BL, BH)
+	     		accident = liste_accidents[i].accident;
+	     		if(accident.usager_1_grav == "Indem") { zones[liste_accidents[i].zone].stats.Indem++; }
+	     		if(accident.usager_1_grav == "BL") { zones[liste_accidents[i].zone].stats.BL++; }
+	     		if(accident.usager_1_grav == "BH") { zones[liste_accidents[i].zone].stats.BH++; }
+	     		if(accident.usager_2_grav == "Indem") { zones[liste_accidents[i].zone].stats.Indem++; }
+	     		if(accident.usager_2_grav == "BL") { zones[liste_accidents[i].zone].stats.BL++; }
+	     		if(accident.usager_2_grav == "BH") { zones[liste_accidents[i].zone].stats.BH++; }
+	     		if(accident.usager_3_grav == "Indem") { zones[liste_accidents[i].zone].stats.Indem++; }
+	     		if(accident.usager_3_grav == "BL") { zones[liste_accidents[i].zone].stats.BL++; }
+	     		if(accident.usager_3_grav == "BH") { zones[liste_accidents[i].zone].stats.BH++; }
+	     		if(accident.usager_4_grav == "Indem") { zones[liste_accidents[i].zone].stats.Indem++; }
+	     		if(accident.usager_4_grav == "BL") { zones[liste_accidents[i].zone].stats.BL++; }
+	     		if(accident.usager_4_grav == "BH") { zones[liste_accidents[i].zone].stats.BH++; }
+	     	}
+         }
 
+		 
          d3.json("data/accidentologie-paris.geojson", function(data) {
+            console.log(data.features);
+            
+            // Contient la liste des centres de chaque zone ainsi que leurs statistiques
+            // zones = [ {center: [0]->x, [1]->y; stats: { nbAcc, Indem, BL, BH } } ]
+            zones = [];
+            
+            // Contient la liste des accidents classe par zone
+           // liste_accidents = [ {zone: id; accident: detail} ]
+            liste_accidents = [];
+            
+            getZones(data.features, 0.01);
+            
+            console.log(zones);
+            console.log(liste_accidents);
+            
             //Set input domain for color scale
             color.domain([0, 200
                //d3.min(data, function(d) { return d.value; }),
