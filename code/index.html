@@ -112,7 +112,7 @@
 			}
 		
 			// Aucune zone ne convient, on en creer donc une nouvelle
-			zones.push({ "center": accident.wgs, "stats" : { "nbAcc": 0, "Indem": 0, "BL": 0, "BH": 0  } });
+			zones.push({ "center": accident.wgs, "stats" : { "nbAcc": 0, "Indem": 0, "BL": 0, "BH": 0, "Fuite": 0, "Conducteur": 0, "Passage": 0, "Pieton": 0, "Velo": 0, "Scooter": 0, "Moto": 0, "Voiture": 0, "VehiculeUtilitaire": 0, "BusCar": 0, "PoidsLourd": 0, "Tram": 0  } });
 			id = zones.length-1;
 			liste_accidents.push({ "zone": id, "accident": accident });
 		 }
@@ -168,6 +168,7 @@
 		 	for(var i = 0; i < liste_accidents.length; ++i) {
 		 		// Mise a jour du nombre d'accident par zone
 		 		zones[liste_accidents[i].zone].stats.nbAcc++;
+		 		
 		 		// Mise a jour de la gravite des blessures lors des accidents d'une zone (Indem, BL, BH)
 		 		accident = liste_accidents[i].accident;
 		 		if(accident.usager_1_grav == "Indem") { zones[liste_accidents[i].zone].stats.Indem++; }
@@ -182,6 +183,80 @@
 		 		if(accident.usager_4_grav == "Indem") { zones[liste_accidents[i].zone].stats.Indem++; }
 		 		if(accident.usager_4_grav == "BL") { zones[liste_accidents[i].zone].stats.BL++; }
 		 		if(accident.usager_4_grav == "BH") { zones[liste_accidents[i].zone].stats.BH++; }
+		 		
+		 		// Nombre de vehicule en fuite
+		 		if(accident.usager_1_lveh == "Z") { zones[liste_accidents[i].zone].stats.Fuite++; }
+		 		if(accident.usager_2_lveh == "Z") { zones[liste_accidents[i].zone].stats.Fuite++; }
+		 		if(accident.usager_3_lveh == "Z") { zones[liste_accidents[i].zone].stats.Fuite++; }
+		 		
+		 		// Type d'usage (Conducteur, Passage, Pieton)
+		 		if(accident.usager_1_catu == "Cond") { zones[liste_accidents[i].zone].stats.Conducteur++; }
+		 		if(accident.usager_1_catu == "Pass") { zones[liste_accidents[i].zone].stats.Passage++; }
+		 		if(accident.usager_1_catu == "Piéton") { zones[liste_accidents[i].zone].stats.Pieton++; }
+		 		if(accident.usager_2_catu == "Cond") { zones[liste_accidents[i].zone].stats.Conducteur++; }
+		 		if(accident.usager_2_catu == "Pass") { zones[liste_accidents[i].zone].stats.Passage++; }
+		 		if(accident.usager_2_catu == "Piéton") { zones[liste_accidents[i].zone].stats.Pieton++; }
+		 		if(accident.usager_3_catu == "Cond") { zones[liste_accidents[i].zone].stats.Conducteur++; }	
+		 		if(accident.usager_3_catu == "Pass") { zones[liste_accidents[i].zone].stats.Passage++; }
+		 		if(accident.usager_3_catu == "Piéton") { zones[liste_accidents[i].zone].stats.Pieton++; }
+		 		if(accident.usager_4_catu == "Cond") { zones[liste_accidents[i].zone].stats.Conducteur++; }	
+		 		if(accident.usager_4_catu == "Pass") { zones[liste_accidents[i].zone].stats.Passage++; }
+		 		if(accident.usager_4_catu == "Piéton") { zones[liste_accidents[i].zone].stats.Pieton++; } 		
+		 		
+		 		// Type de vehicule (Velo, Scooter, Moto, Voiture, VehiculeUtilitaire, BusCar, PoidsLourd, Tram)
+		 		if(accident.vehicule_1_cadmin == "Bicy") { zones[liste_accidents[i].zone].stats.Velo++; }
+		 		if(accident.vehicule_1_cadmin == "Cyclo") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_1_cadmin == "Scoo<=50") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_1_cadmin == "Scoo50-125") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_1_cadmin == "Scoo>125") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_1_cadmin == "Moto50-125") { zones[liste_accidents[i].zone].stats.Moto++; }
+		 		if(accident.vehicule_1_cadmin == "Moto>125") { zones[liste_accidents[i].zone].stats.Moto++; }
+		 		if(accident.vehicule_1_cadmin == "VL") { zones[liste_accidents[i].zone].stats.Voiture++; }
+		 		if(accident.vehicule_1_cadmin == "Voi") { zones[liste_accidents[i].zone].stats.Voiture++; }
+		 		if(accident.vehicule_1_cadmin == "VU") { zones[liste_accidents[i].zone].stats.VehiculeUtilitaire++; }
+		 		if(accident.vehicule_1_cadmin == "BUS") { zones[liste_accidents[i].zone].stats.BusCar++; }
+		 		if(accident.vehicule_1_cadmin == "Car") { zones[liste_accidents[i].zone].stats.BusCar++; }
+		 		if(accident.vehicule_1_cadmin == "PL<=7,5") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_1_cadmin == "PL>7,5") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_1_cadmin == "PLRem") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_1_cadmin == "TRSem") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_1_cadmin == "Tram") { zones[liste_accidents[i].zone].stats.Tram++; }
+		 		
+		 		if(accident.vehicule_2_cadmin == "Bicy") { zones[liste_accidents[i].zone].stats.Velo++; }
+		 		if(accident.vehicule_2_cadmin == "Cyclo") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_2_cadmin == "Scoo<=50") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_2_cadmin == "Scoo50-125") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_2_cadmin == "Scoo>125") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_2_cadmin == "Moto50-125") { zones[liste_accidents[i].zone].stats.Moto++; }
+		 		if(accident.vehicule_2_cadmin == "Moto>125") { zones[liste_accidents[i].zone].stats.Moto++; }
+		 		if(accident.vehicule_2_cadmin == "VL") { zones[liste_accidents[i].zone].stats.Voiture++; }
+		 		if(accident.vehicule_2_cadmin == "Voi") { zones[liste_accidents[i].zone].stats.Voiture++; }
+		 		if(accident.vehicule_2_cadmin == "VU") { zones[liste_accidents[i].zone].stats.VehiculeUtilitaire++; }
+		 		if(accident.vehicule_2_cadmin == "BUS") { zones[liste_accidents[i].zone].stats.BusCar++; }
+		 		if(accident.vehicule_2_cadmin == "Car") { zones[liste_accidents[i].zone].stats.BusCar++; }
+		 		if(accident.vehicule_2_cadmin == "PL<=7,5") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_2_cadmin == "PL>7,5") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_2_cadmin == "PLRem") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_2_cadmin == "TRSem") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_2_cadmin == "Tram") { zones[liste_accidents[i].zone].stats.Tram++; }
+		 		
+		 		if(accident.vehicule_3_cadmin == "Bicy") { zones[liste_accidents[i].zone].stats.Velo++; }
+		 		if(accident.vehicule_3_cadmin == "Cyclo") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_3_cadmin == "Scoo<=50") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_3_cadmin == "Scoo50-125") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_3_cadmin == "Scoo>125") { zones[liste_accidents[i].zone].stats.Scooter++; }
+		 		if(accident.vehicule_3_cadmin == "Moto50-125") { zones[liste_accidents[i].zone].stats.Moto++; }
+		 		if(accident.vehicule_3_cadmin == "Moto>125") { zones[liste_accidents[i].zone].stats.Moto++; }
+		 		if(accident.vehicule_3_cadmin == "VL") { zones[liste_accidents[i].zone].stats.Voiture++; }
+		 		if(accident.vehicule_3_cadmin == "Voi") { zones[liste_accidents[i].zone].stats.Voiture++; }
+		 		if(accident.vehicule_3_cadmin == "VU") { zones[liste_accidents[i].zone].stats.VehiculeUtilitaire++; }
+		 		if(accident.vehicule_3_cadmin == "BUS") { zones[liste_accidents[i].zone].stats.BusCar++; }
+		 		if(accident.vehicule_3_cadmin == "Car") { zones[liste_accidents[i].zone].stats.BusCar++; }
+		 		if(accident.vehicule_3_cadmin == "PL<=7,5") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_3_cadmin == "PL>7,5") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_3_cadmin == "PLRem") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_3_cadmin == "TRSem") { zones[liste_accidents[i].zone].stats.PoidsLourd++; }
+		 		if(accident.vehicule_3_cadmin == "Tram") { zones[liste_accidents[i].zone].stats.Tram++; }
 		 	}
 		 }
          
@@ -202,10 +277,10 @@
             liste_accidents = [];
             
             // Test 1 (filtrage par un intervalle de date)
-            getZones(data.features, 0.01, [75020, 75013], ["2013"], ["04","10"], ["07","22"], ["09:00","12:35"], ["2012-12-23", "2013-01-02"]);
+            //getZones(data.features, 0.01, [75020, 75013], ["2013"], ["04","10"], ["07","22"], ["09:00","12:35"], ["2012-12-23", "2013-01-02"]);
             
             // Test 2 (filtrage par annees - mois - jours en particulier)
-            //getZones(data.features, 0.01, [75020, 75013], ["2013"], [], ["07"], [], []);
+            getZones(data.features, 0.01, [], ["2013","2012"], ["04"], ["07"], [], []);
             
             // Test 3 (sans filtrage)
             //getZones(data.features, 0.01, [], [], [], [], [], []);
