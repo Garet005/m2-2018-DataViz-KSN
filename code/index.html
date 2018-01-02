@@ -25,6 +25,10 @@
             .append("svg")
             .attr("width", width)
             .attr("height", height);
+            
+	    // add a rectangle to see the bound of the svg
+  		svg.append("rect").attr('width', width).attr('height', height)
+	    .style('stroke', 'black').style('fill', 'none');
 
          var g = svg.append("g");
 
@@ -37,14 +41,21 @@
             ]);
 
          //Define map projection
-         var projection = d3.geoConicConformal().center([2.287592,
+         /*var projection = d3.geoConicConformal().center([2.287592,
             48.862725
          ]).scale(
-            10000);
+            150000);*/
+         /*
+		var projection = d3.geoMercator();
+         
+        // set projection parameters
+		projection
+		  .scale(15000)
+		  .center([2.287592,48.86272])
 
          var path = d3.geoPath() // d3.geo.path avec d3 version 3
             .projection(projection);
-
+*/
          var tooltip = d3.select('body').append('div')
             .attr('class', 'hidden tooltip');
 
@@ -102,8 +113,8 @@
 		 function affectZone(accident, rayon) {
 		 	for(var i=0; i < zones.length; ++i) {
 		 		center = zones[i].center;
-		 		x = accident.wgs[0];
-		 		y = accident.wgs[1];
+		 		x = accident.properties.wgs[0];
+		 		y = accident.properties.wgs[1];
 			 	// check coordonnee en X et Y
 			 	if(x <= center[0]+rayon && x >= center[0]-rayon && y <= center[1]+rayon && y >= center[1]-rayon) {
 		 			liste_accidents.push({ "zone": i, "accident": accident });
@@ -112,7 +123,7 @@
 			}
 		
 			// Aucune zone ne convient, on en creer donc une nouvelle
-			zones.push({ "center": accident.wgs, "stats" : { "nbAcc": 0, "Indem": 0, "BL": 0, "BH": 0, "Fuite": 0, "Conducteur": 0, "Passage": 0, "Pieton": 0, "Velo": 0, "Scooter": 0, "Moto": 0, "Voiture": 0, "VehiculeUtilitaire": 0, "BusCar": 0, "PoidsLourd": 0, "Tram": 0  } });
+			zones.push({ "center": accident.properties.wgs, "stats" : { "nbAcc": 0, "Indem": 0, "BL": 0, "BH": 0, "Fuite": 0, "Conducteur": 0, "Passage": 0, "Pieton": 0, "Velo": 0, "Scooter": 0, "Moto": 0, "Voiture": 0, "VehiculeUtilitaire": 0, "BusCar": 0, "PoidsLourd": 0, "Tram": 0  } });
 			id = zones.length-1;
 			liste_accidents.push({ "zone": id, "accident": accident });
 		 }
@@ -142,7 +153,7 @@
 		 				if(checkDaysInterval(accidents[i].properties.date, daysInterval)) {
 			 				// Filtre par un intervalle d'heure
 			 				if(minutesInterval.length == 0 || checkHoursInterval(accidents[i].properties.heure, minutesInterval)) {
-			 					id = affectZone(accidents[i].properties, rayon);
+			 					id = affectZone(accidents[i], rayon);
 			 				}
 		 				}
 		 			} else {	// Filtre par annees - mois - jours en particulier
@@ -154,7 +165,7 @@
 			 					if(jours.length == 0 || jours.indexOf(accidents[i].properties.date.slice(8,10)) != -1) {
 			 						// Filtre par un intervalle d'heure
 			 						if(minutesInterval.length == 0 || checkHoursInterval(accidents[i].properties.heure, minutesInterval)) {
-		 								id = affectZone(accidents[i].properties, rayon);
+		 								id = affectZone(accidents[i], rayon);
 		 							}
 			 					}
 			 				}
@@ -265,7 +276,30 @@
 		///*******************************************///
 		 
 		 
-         d3.json("data/accidentologie-paris.geojson", function(data) {
+		d3.json("data/accidentologie-paris.geojson", function(data) {
+            // create a first guess for the projection
+			var center = d3.geoCentroid(data);
+			var scale  = 15000;
+			var offset = [width/2, height/2];
+			var projection = d3.geoMercator().scale(scale).center(center).translate(offset);
+			
+			// create the path
+			var path = d3.geoPath().projection(projection);
+			
+			// using the path determine the bounds of the current map and use 
+			// these to determine better values for the scale and translation
+			var bounds  = path.bounds(data);
+			var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
+			var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+			var scale   = (hscale < vscale) ? hscale : vscale;
+			var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
+						    height - (bounds[0][1] + bounds[1][1])/2];
+			
+			// new projection
+			projection = d3.geoMercator().center(center).scale(scale).translate(offset);
+			path = path.projection(projection);
+            
+            
             console.log(data.features);
             
             // Contient la liste des centres de chaque zone ainsi que leurs statistiques
@@ -280,15 +314,10 @@
             //getZones(data.features, 0.01, [75020, 75013], ["2013"], ["04","10"], ["07","22"], ["09:00","12:35"], ["2012-12-23", "2013-01-02"]);
             
             // Test 2 (filtrage par annees - mois - jours en particulier)
-            getZones(data.features, 0.01, [], ["2013","2012"], ["04"], ["07"], [], []);
+            //getZones(data.features, 0.01, [], ["2013","2012"], ["04"], ["07"], [], []);
             
             // Test 3 (sans filtrage)
-            //getZones(data.features, 0.01, [], [], [], [], [], []);
-            
-            console.log(zones);
-            console.log(liste_accidents);
-            
-            
+            getZones(data.features, 0.01, [], [], [], [], [], []);
             
             
             //Set input domain for color scale
@@ -328,23 +357,47 @@
                   drawMap(val);
                };
 
-               France = json
-
+               France = json;
+               
+           	   graph = {"zones": zones, "accidents": liste_accidents, "carte": France.features};
+			   console.log(graph);
+			   
                g.selectAll("path")
-                  .data(json.features)
+                  .data(graph.carte)
                   .enter()
                   .append("path")
                   .attr("d", path)
-                  .style("fill", "steelblue");
+                  .style("fill", "#9b9b9b");
+               
+               // Tentative d'ajout des zones
+               g.selectAll("circle")
+		 		.data(graph.zones)
+            	.enter()
+            	.append("circle")
+            	// Mal dimensionne
+            	//.attr("cx", function (d) { return projection(d.center)[0]; })
+				//.attr("cy", function (d) { return projection(d.center)[1]; })
+				.attr("cx", 800)
+				.attr("cy", 200)
+				.attr("r", 10)
+				.attr("fill", "blue");
+            	/*.each(function(d) {
+            		var header = d3.select(this);
+            		console.log(header);
+            		header.attr("r", 1)
+            		header.attr("fill", "blue");
+            	})*/
+            	
 
                drawMap(1);
             });
-
+            
+			
             // FONCTION DRAWMAP STARTS HERE 
             function drawMap(value) {
 
                carte = g.selectAll("path")
-                  .data(France.features)
+                  .data(graph.carte)
                   .on('mousemove', function(d) {
                      var mouse = d3.mouse(g.node()).map(function(d) {
                         return parseInt(d);
@@ -359,7 +412,7 @@
                   });
 
                //update map 
-               carte
+               /*carte
                   .attr("class", "update")
                   .style("fill", function(d) {
                      // get value found above
@@ -370,12 +423,12 @@
                         // if no value matching, other color 
                         return "#9b9b9b"; //"#ccc";
                      }
-                  })
+                  })*/
 
                // draw map for the 1st time 
-               carte.selectAll("path")
+               /*carte.selectAll("path")
                   .enter()
-                  .data(France.features)
+                  .data(graph.carte)
                   .append("path")
                   .attr("class", "enter")
                   .attr("d", path)
@@ -388,7 +441,7 @@
                         // if no value matching, other color 
                         return "#efefef"; //"#ccc";
                      }
-                  })
+                  })*/
             }
          });
       </script>
