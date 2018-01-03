@@ -4,9 +4,193 @@
     <title>Accidentologie Paris</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+	$( function() {
+		$( "input" ).checkboxradio({
+	  		icon: false
+		});
+	} );
+	</script>
   </head>
   <body>
-    <div id="map"></div>
+  	<div style="margin:auto; width:80%; height:220px;">
+	  	<h3 style="text-align:center;">Choix multiple par Années/Mois/Jours</h3>
+		<div class="widget" style="float:left; width:100px; height:80%;">
+			<fieldset>
+				<legend>Années : </legend>
+				<label for="checkbox-2012">2012</label>
+				<input type="checkbox" name="checkbox-2012" id="checkbox-2012">
+				<label for="checkbox-2013">2013</label>
+				<input type="checkbox" name="checkbox-2013" id="checkbox-2013">
+			</fieldset>
+		</div>
+		<div class="widget" style="float:left; margin-left:200px; margin-right:50px; width:450px; height:80%;">
+			<fieldset>
+				<legend>Mois : </legend>
+				<label for="checkbox-Janvier">Janvier</label>
+				<input type="checkbox" name="checkbox-1" id="checkbox-Janvier">
+				<label for="checkbox-Fevrier">Février</label>
+				<input type="checkbox" name="checkbox-Fevrier" id="checkbox-Fevrier">
+				<label for="checkbox-Mars">Mars</label>
+				<input type="checkbox" name="checkbox-Mars" id="checkbox-Mars">
+				<label for="checkbox-Avril">Avril</label>
+				<input type="checkbox" name="checkbox-Avril" id="checkbox-Avril">
+				<label for="checkbox-Mai">Mai</label>
+				<input type="checkbox" name="checkbox-Mai" id="checkbox-Mai">
+				<label for="checkbox-Juin">Juin</label>
+				<input type="checkbox" name="checkbox-Juin" id="checkbox-Juin">
+				<label for="checkbox-Juillet">Juillet</label>
+				<input type="checkbox" name="checkbox-Juillet" id="checkbox-Juillet">
+				<label for="checkbox-Aout">Août</label>
+				<input type="checkbox" name="checkbox-Aout" id="checkbox-Aout">
+				<label for="checkbox-Septembre">Septembre</label>
+				<input type="checkbox" name="checkbox-Septembre" id="checkbox-Septembre">
+				<label for="checkbox-Octobre">Octobre</label>
+				<input type="checkbox" name="checkbox-Octobre" id="checkbox-Octobre">
+				<label for="checkbox-Novembre">Novembre</label>
+				<input type="checkbox" name="checkbox-Novembre" id="checkbox-Novembre">
+				<label for="checkbox-Decembre">Décembre</label>
+				<input type="checkbox" name="checkbox-Decembre" id="checkbox-Decembre">
+			</fieldset>
+		</div>
+		<div class="widget" style="float:right; width:500px; height:80%;">
+			<fieldset>
+				<legend>Jours : </legend>
+				<label for="checkbox-01">01</label>
+				<input type="checkbox" name="checkbox-01" id="checkbox-01">
+				<label for="checkbox-02">02</label>
+				<input type="checkbox" name="checkbox-02" id="checkbox-02">
+				<label for="checkbox-03">03</label>
+				<input type="checkbox" name="checkbox-03" id="checkbox-03">
+				<label for="checkbox-04">04</label>
+				<input type="checkbox" name="checkbox-04" id="checkbox-04">
+				<label for="checkbox-05">05</label>
+				<input type="checkbox" name="checkbox-05" id="checkbox-05">
+				<label for="checkbox-06">06</label>
+				<input type="checkbox" name="checkbox-06" id="checkbox-06">
+				<label for="checkbox-07">07</label>
+				<input type="checkbox" name="checkbox-07" id="checkbox-07">
+				<label for="checkbox-08">08</label>
+				<input type="checkbox" name="checkbox-08" id="checkbox-08">
+				<label for="checkbox-09">09</label>
+				<input type="checkbox" name="checkbox-09" id="checkbox-09">
+				<label for="checkbox-10">10</label>
+				<input type="checkbox" name="checkbox-10" id="checkbox-10">
+				<label for="checkbox-11">11</label>
+				<input type="checkbox" name="checkbox-11" id="checkbox-11">
+				<label for="checkbox-12">12</label>
+				<input type="checkbox" name="checkbox-12" id="checkbox-12">
+				<label for="checkbox-13">13</label>
+				<input type="checkbox" name="checkbox-13" id="checkbox-13">
+				<label for="checkbox-14">14</label>
+				<input type="checkbox" name="checkbox-14" id="checkbox-14">
+				<label for="checkbox-15">15</label>
+				<input type="checkbox" name="checkbox-15" id="checkbox-15">
+				<label for="checkbox-16">16</label>
+				<input type="checkbox" name="checkbox-16" id="checkbox-16">
+				<label for="checkbox-17">17</label>
+				<input type="checkbox" name="checkbox-17" id="checkbox-17">
+				<label for="checkbox-18">18</label>
+				<input type="checkbox" name="checkbox-18" id="checkbox-18">
+				<label for="checkbox-19">19</label>
+				<input type="checkbox" name="checkbox-19" id="checkbox-19">
+				<label for="checkbox-20">20</label>
+				<input type="checkbox" name="checkbox-20" id="checkbox-20">
+				<label for="checkbox-21">21</label>
+				<input type="checkbox" name="checkbox-21" id="checkbox-21">
+				<label for="checkbox-22">22</label>
+				<input type="checkbox" name="checkbox-22" id="checkbox-22">
+				<label for="checkbox-23">23</label>
+				<input type="checkbox" name="checkbox-23" id="checkbox-23">
+				<label for="checkbox-24">24</label>
+				<input type="checkbox" name="checkbox-24" id="checkbox-24">
+				<label for="checkbox-25">25</label>
+				<input type="checkbox" name="checkbox-25" id="checkbox-25">
+				<label for="checkbox-26">26</label>
+				<input type="checkbox" name="checkbox-26" id="checkbox-26">
+				<label for="checkbox-27">27</label>
+				<input type="checkbox" name="checkbox-27" id="checkbox-27">
+				<label for="checkbox-28">28</label>
+				<input type="checkbox" name="checkbox-28" id="checkbox-28">
+				<label for="checkbox-29">29</label>
+				<input type="checkbox" name="checkbox-29" id="checkbox-29">
+				<label for="checkbox-30">30</label>
+				<input type="checkbox" name="checkbox-30" id="checkbox-30">
+				<label for="checkbox-31">31</label>
+				<input type="checkbox" name="checkbox-31" id="checkbox-31">
+			</fieldset>
+		</div>
+	</div>
+	
+	<div class="widget" style="margin:auto; height:210px;">
+		<h3 style="text-align:center;">Choix multiple des arrondissements</h3>
+		<fieldset style="margin:auto; width:25%;">
+			<legend>Arrondissements : </legend>
+			<label for="checkbox-A01">01</label>
+			<input type="checkbox" name="checkbox-A01" id="checkbox-A01">
+			<label for="checkbox-A02">02</label>
+			<input type="checkbox" name="checkbox-A02" id="checkbox-A02">
+			<label for="checkbox-A03">03</label>
+			<input type="checkbox" name="checkbox-A03" id="checkbox-A03">
+			<label for="checkbox-A04">04</label>
+			<input type="checkbox" name="checkbox-A04" id="checkbox-A04">
+			<label for="checkbox-A05">05</label>
+			<input type="checkbox" name="checkbox-A05" id="checkbox-A05">
+			<label for="checkbox-A06">06</label>
+			<input type="checkbox" name="checkbox-A06" id="checkbox-A06">
+			<label for="checkbox-A07">07</label>
+			<input type="checkbox" name="checkbox-A07" id="checkbox-A07">
+			<label for="checkbox-A08">08</label>
+			<input type="checkbox" name="checkbox-A08" id="checkbox-A08">
+			<label for="checkbox-A09">09</label>
+			<input type="checkbox" name="checkbox-A09" id="checkbox-A09">
+			<label for="checkbox-A10">10</label>
+			<input type="checkbox" name="checkbox-A10" id="checkbox-A10">
+			<label for="checkbox-A11">11</label>
+			<input type="checkbox" name="checkbox-A11" id="checkbox-A11">
+			<label for="checkbox-A12">12</label>
+			<input type="checkbox" name="checkbox-A12" id="checkbox-A12">
+			<label for="checkbox-A13">13</label>
+			<input type="checkbox" name="checkbox-A13" id="checkbox-A13">
+			<label for="checkbox-A14">14</label>
+			<input type="checkbox" name="checkbox-A14" id="checkbox-A14">
+			<label for="checkbox-A15">15</label>
+			<input type="checkbox" name="checkbox-A15" id="checkbox-A15">
+			<label for="checkbox-A16">16</label>
+			<input type="checkbox" name="checkbox-A16" id="checkbox-A16">
+			<label for="checkbox-A17">17</label>
+			<input type="checkbox" name="checkbox-A17" id="checkbox-A17">
+			<label for="checkbox-A18">18</label>
+			<input type="checkbox" name="checkbox-A18" id="checkbox-A18">
+			<label for="checkbox-A19">19</label>
+			<input type="checkbox" name="checkbox-A19" id="checkbox-A19">
+			<label for="checkbox-A20">20</label>
+			<input type="checkbox" name="checkbox-A20" id="checkbox-A20">
+		</fieldset>
+	</div>
+	
+	<div id="overlay" style="margin:auto; height:80px;">
+		<h3 style="text-align:center;">Choix par un intervalle de date</h3>
+		<form style="text-align:center;">
+		Date de début: <input type="date" id="beginDate" name="beginDate" value="2012-01-01" min="2012-01-01" max="2013-12-31"><br>
+		Date de fin: <input type="date" id="endDate" name="endDate" value="2012-01-01" min= "2012-01-01" max="2013-12-31">
+		</form>
+    </div>
+    
+    <div id="overlay2" style="margin:auto; height:100px;">
+		<h3 style="text-align:center;">Choix d'un intervalle d'heure</h3>
+		<form style="text-align:center;">
+		Heure de début: <input type="time" id="beginHour" name="beginHour" value="09:00">
+		<br />
+		Heure de fin: <input type="time" id="endHour" name="endHour" value="12:00">
+		</form>
+	</div>
+  	<br />
+	<div id="map"></div>
 
    <!-- include cartodb.js library -->
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
@@ -329,7 +513,7 @@
 		    graph = {"zones": zones, "accidents": liste_accidents};
 		   	console.log(graph);
 		   	
-		   	
+			
 		   	// TODO Tentative d'ajout des zones
 			/*g.selectAll("circle")
 			.data(graph.zones)
