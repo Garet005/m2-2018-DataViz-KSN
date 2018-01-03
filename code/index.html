@@ -1,73 +1,80 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
+  <head>
+    <title>Accidentologie Paris</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+  </head>
+  <body>
+    <div id="map"></div>
 
-   <head>
-      <meta charset="utf-8">
-      <title>Accidentologie Paris</title>
-      <script src="https://d3js.org/d3.v4.min.js"></script>
-      <style type="text/css">
-         /* No style rules here yet */
-      </style>
-   </head>
-
-   <body>
-
-      <div>
-         <input id="slider" type="range" value="1" min="1" max="52" step="1" />
-         <span id="week">week</span>
-      </div>
-
-      <script>
-         var width = 1280,
-            height = 720;
-
-         var svg = d3.select("body")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height);
-            
-	    // add a rectangle to see the bound of the svg
-  		svg.append("rect").attr('width', width).attr('height', height)
-	    .style('stroke', 'black').style('fill', 'none');
-
-         var g = svg.append("g");
-
-         var color = d3.scaleQuantize()
-            .range(["rgb(237,248,233)",
-               "rgb(186,228,179)",
-               "rgb(116,196,118)",
-               "rgb(49,163,84)",
-               "rgb(0,109,44)"
-            ]);
-
-         //Define map projection
-         /*var projection = d3.geoConicConformal().center([2.287592,
-            48.862725
-         ]).scale(
-            150000);*/
-         /*
-		var projection = d3.geoMercator();
-         
-        // set projection parameters
-		projection
-		  .scale(15000)
-		  .center([2.287592,48.86272])
-
-         var path = d3.geoPath() // d3.geo.path avec d3 version 3
-            .projection(projection);
-*/
-         var tooltip = d3.select('body').append('div')
-            .attr('class', 'hidden tooltip');
-
-         function known(d, week) {
-            if (d.properties.tab != undefined) {
-               var val = d.properties.tab[week];
-            }
-            return val
-         };
-         
-         
-		///*******************************************///
+   <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+		
+    //  function main() 
+     		  
+		var bigmapheight = 650;
+	  	var smallmapheight = 300;
+	  	var mapbreakwidth = 720;
+	  	var highzoom = 11;
+	  	var lowzoom = 7;
+	  	var initzoom;
+//		var vizjson = 'https://mediafin.cartodb.com/api/v2/viz/6a800846-5607-11e5-b2d0-0e4fddd5de28/viz.json';
+		
+		//Set initial mapheight, based on the calculated width of the map container
+		if ($("#map").width() > mapbreakwidth) {
+			initzoom = highzoom;
+			$("#map").height(bigmapheight);
+		}
+		else {
+			initzoom = lowzoom;
+			$("#map").height(smallmapheight);
+		};
+		
+        var map = new L.Map('map', {
+          center: [48.85841, 2.3488],
+          zoom: initzoom
+        });
+		  
+        L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
+          attribution: 'Stamen'
+        }).addTo(map);
+		  
+        cartodb.createLayer(map, vizjson)
+            .addTo(map)
+         .on('done', function(layer) {
+           layer.setInteraction(true);
+		  
+          layer.on('error', function(err) {
+            cartodb.log.log('error: ' + err);
+          });	
+        })
+		.on('error', function() {
+          cartodb.log.log("some error occurred");
+        });
+		  
+		//Use Leaflets resize event to set new map height and zoom level
+		map.on('resize', function(e) {
+		  	if (e.newSize.x < mapbreakwidth) {
+				map.setZoom(lowzoom);
+				$("#map").css('height', smallmapheight);
+			};
+			  
+			if (e.newSize.x > mapbreakwidth) {
+				map.setZoom(highzoom);
+				$("#map").css('height', bigmapheight);
+				$("#map").css('height', bigmapheight);
+			};
+		  });
+    
+      	// you could use $(window).load(main);
+    	//  window.onload = main;
+    	
+    
+    
+    	///*******************************************///
 		///********** Partie accidentologie **********///
 		///*******************************************///
         
@@ -181,7 +188,7 @@
 		 		zones[liste_accidents[i].zone].stats.nbAcc++;
 		 		
 		 		// Mise a jour de la gravite des blessures lors des accidents d'une zone (Indem, BL, BH)
-		 		accident = liste_accidents[i].accident;
+		 		accident = liste_accidents[i].accident.properties;
 		 		if(accident.usager_1_grav == "Indem") { zones[liste_accidents[i].zone].stats.Indem++; }
 		 		if(accident.usager_1_grav == "BL") { zones[liste_accidents[i].zone].stats.BL++; }
 		 		if(accident.usager_1_grav == "BH") { zones[liste_accidents[i].zone].stats.BH++; }
@@ -274,175 +281,65 @@
 		///*******************************************///
 		///*******************************************///
 		///*******************************************///
-		 
-		 
+		
+		
 		d3.json("data/accidentologie-paris.geojson", function(data) {
-            // create a first guess for the projection
+			// create a first guess for the projection
 			var center = d3.geoCentroid(data);
 			var scale  = 15000;
-			var offset = [width/2, height/2];
+			var offset = [mapbreakwidth/2, bigmapheight/2];
 			var projection = d3.geoMercator().scale(scale).center(center).translate(offset);
-			
+	
 			// create the path
 			var path = d3.geoPath().projection(projection);
-			
+	
 			// using the path determine the bounds of the current map and use 
 			// these to determine better values for the scale and translation
 			var bounds  = path.bounds(data);
-			var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
-			var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+			var hscale  = scale*mapbreakwidth  / (bounds[1][0] - bounds[0][0]);
+			var vscale  = scale*bigmapheight / (bounds[1][1] - bounds[0][1]);
 			var scale   = (hscale < vscale) ? hscale : vscale;
-			var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
-						    height - (bounds[0][1] + bounds[1][1])/2];
-			
+			var offset  = [mapbreakwidth - (bounds[0][0] + bounds[1][0])/2,
+							bigmapheight - (bounds[0][1] + bounds[1][1])/2];
+	
 			// new projection
 			projection = d3.geoMercator().center(center).scale(scale).translate(offset);
 			path = path.projection(projection);
-            
-            
-            console.log(data.features);
-            
-            // Contient la liste des centres de chaque zone ainsi que leurs statistiques
-            // zones = [ {center: [0]->x, [1]->y; stats: { nbAcc, Indem, BL, BH } } ]
-            zones = [];
-            
-           // Contient la liste des accidents classe par zone
-           // liste_accidents = [ {zone: id; accident: detail} ]
-            liste_accidents = [];
-            
-            // Test 1 (filtrage par un intervalle de date)
-            //getZones(data.features, 0.01, [75020, 75013], ["2013"], ["04","10"], ["07","22"], ["09:00","12:35"], ["2012-12-23", "2013-01-02"]);
-            
-            // Test 2 (filtrage par annees - mois - jours en particulier)
-            //getZones(data.features, 0.01, [], ["2013","2012"], ["04"], ["07"], [], []);
-            
-            // Test 3 (sans filtrage)
-            getZones(data.features, 0.01, [], [], [], [], [], []);
-            
-            
-            //Set input domain for color scale
-            color.domain([0, 200
-               //d3.min(data, function(d) { return d.value; }),
-               //d3.max(data, function(d) { return d.value; })
-            ]);
-
-            var weeksArray = Object.keys(data.features[0]);            
-            var France;
-
-            //partie 4
-            d3.json("data/arrondissements-ile-de-france.geojson", function(json) {
-
-               d3.select('#week').html(Object.keys(data.features[0])[1]);
-
-               d3.select("#slider").on("input", function() {
-                  updateViz(+this.value);
-               });
-
-               //On fusionne les donnees avec le GeoJSON des regions
-               for (var i = 0; i < data.length; ++i) {
-                  for (var j = 0; j < json.features.length; ++j) {
-                     //find name dataRegion in json file 
-                     var jsonRegion = json.features[j].properties.nom;
-                     if (data[i].region == jsonRegion) {
-                        json.features[j].properties.tab = Object.values(data[i]);
-                        //stop because result found
-                        break;
-                     }
-                  }
-               }
-
-               // UPDATE : week and map 
-               function updateViz(val) {
-                  d3.select('#week').html(weeksArray[val]);
-                  drawMap(val);
-               };
-
-               France = json;
-               
-           	   graph = {"zones": zones, "accidents": liste_accidents, "carte": France.features};
-			   console.log(graph);
-			   
-               g.selectAll("path")
-                  .data(graph.carte)
-                  .enter()
-                  .append("path")
-                  .attr("d", path)
-                  .style("fill", "#9b9b9b");
-               
-               // Tentative d'ajout des zones
-               g.selectAll("circle")
-		 		.data(graph.zones)
-            	.enter()
-            	.append("circle")
-            	// Mal dimensionne
-            	//.attr("cx", function (d) { return projection(d.center)[0]; })
-				//.attr("cy", function (d) { return projection(d.center)[1]; })
-				.attr("cx", 800)
-				.attr("cy", 200)
-				.attr("r", 10)
-				.attr("fill", "blue");
-            	/*.each(function(d) {
-            		var header = d3.select(this);
-            		console.log(header);
-            		header.attr("r", 1)
-            		header.attr("fill", "blue");
-            	})*/
-            	
-
-               drawMap(1);
-            });
-            
 			
-            // FONCTION DRAWMAP STARTS HERE 
-            function drawMap(value) {
-
-               carte = g.selectAll("path")
-                  .data(graph.carte)
-                  .on('mousemove', function(d) {
-                     var mouse = d3.mouse(g.node()).map(function(d) {
-                        return parseInt(d);
-                     });
-                     tooltip.classed('hidden', false)
-                        .attr('style', 'left:' + (mouse[0] + 15) +
-                           'px; top:' + (mouse[1] - 35) + 'px')
-                        .html(d.properties.nom + "<br/>" + known(d, value));
-                  })
-                  .on('mouseout', function() {
-                     tooltip.classed('hidden', true);
-                  });
-
-               //update map 
-               /*carte
-                  .attr("class", "update")
-                  .style("fill", function(d) {
-                     // get value found above
-                     var tab = d.properties.tab;
-                     if (tab) {
-                        return color(tab[value]);
-                     } else {
-                        // if no value matching, other color 
-                        return "#9b9b9b"; //"#ccc";
-                     }
-                  })*/
-
-               // draw map for the 1st time 
-               /*carte.selectAll("path")
-                  .enter()
-                  .data(graph.carte)
-                  .append("path")
-                  .attr("class", "enter")
-                  .attr("d", path)
-                  .style("fill", function(d) {
-                     // get value found above
-                     var tab = d.properties.tab;
-                     if (tab) {
-                        return color(tab[value]);
-                     } else {
-                        // if no value matching, other color 
-                        return "#efefef"; //"#ccc";
-                     }
-                  })*/
-            }
-         });
-      </script>
-   </body>
+			
+			console.log(data.features);
+		        
+		    // Contient la liste des centres de chaque zone ainsi que leurs statistiques
+		    // zones = [ {center: [0]->x, [1]->y; stats: { nbAcc, Indem, BL, BH } } ]
+		    zones = [];
+		    
+		   // Contient la liste des accidents classe par zone
+		   // liste_accidents = [ {zone: id; accident: detail} ]
+		    liste_accidents = [];
+		    
+		    // Test 1 (filtrage par un intervalle de date)
+		    //getZones(data.features, 0.01, [75020, 75013], ["2013"], ["04","10"], ["07","22"], ["09:00","12:35"], ["2012-12-23", "2013-01-02"]);
+		    
+		    // Test 2 (filtrage par annees - mois - jours en particulier)
+		    //getZones(data.features, 0.01, [], ["2013","2012"], ["04"], ["07"], [], []);
+		    
+		    // Test 3 (sans filtrage)
+		    getZones(data.features, 0.01, [], [], [], [], [], []);
+		    
+		    graph = {"zones": zones, "accidents": liste_accidents};
+		   	console.log(graph);
+		   	
+		   	
+		   	// TODO Tentative d'ajout des zones
+			/*g.selectAll("circle")
+			.data(graph.zones)
+			.enter()
+			.append("circle")
+			.attr("cx", function (d) { return projection(d.center)[0]; })
+			.attr("cy", function (d) { return projection(d.center)[1]; })
+			.attr("r", 10)
+			.attr("fill", "blue");*/
+	   	});
+    </script>
+  </body>
+</html>
