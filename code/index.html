@@ -6,191 +6,336 @@
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="/resources/demos/style.css">
+	<link rel="stylesheet" href="./css/style.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script>
 	$( function() {
-		$( "input" ).checkboxradio({
-	  		icon: false
+		$( ".years" ).checkboxradio({
+  			icon: false
+		});
+		$( ".months" ).checkboxradio({
+  			icon: false
+		});
+		$( ".days" ).checkboxradio({
+  			icon: false
+		});
+		$( ".arrondissements" ).checkboxradio({
+  			icon: false
 		});
 	} );
+	
+	function show()
+	{
+		if(document.getElementById('intervalle').checked==true) {
+			document.getElementById('date').style.visibility='visible';
+			document.getElementById('date').style.display='block';
+			document.getElementById('year').style.visibility='hidden';
+			document.getElementById('year').style.display='none';
+			document.getElementById('month').style.visibility='hidden';
+			document.getElementById('month').style.display='none';
+			document.getElementById('day').style.visibility='hidden';
+			document.getElementById('day').style.display='none';
+		} else {
+			document.getElementById('date').style.visibility='hidden';
+			document.getElementById('date').style.display='none';
+			document.getElementById('year').style.visibility='visible';
+			document.getElementById('year').style.display='block';
+			document.getElementById('month').style.visibility='visible';
+			document.getElementById('month').style.display='block';
+			document.getElementById('day').style.visibility='visible';
+			document.getElementById('day').style.display='block';
+		}
+	}
 	</script>
   </head>
   <body>
-  	<div style="margin:auto; width:80%; height:220px;">
-	  	<h3 style="text-align:center;">Choix multiple par Années/Mois/Jours</h3>
-		<div class="widget" style="float:left; width:100px; height:80%;">
-			<fieldset>
+  	<div style="height:750px;">
+  		<div class="container">
+			<h3 style="text-align:center;">Choix du filtrage des dates</h3>
+  			<ul>
+			<li>
+		  		<input type="radio" id="intervalle" name="selector" checked="true" onclick="show()">
+				<label for="intervalle">Par un intervalle de date</label>
+				<div class="check"></div>
+			</li>
+			<li>
+				<input type="radio" id="multiple" name="selector" onclick="show()">
+				<label for="multiple">Choix multiple Années/Mois/Jours</label>
+				<div class="check"><div class="inside"></div></div>
+			</li>
+			</ul>
+		</div>
+  	
+		<div class="widget" id="year" style="float:left; width:20%; height:200px; visibility:hidden; display:none;">
+			<h3 style="text-align:center;">Choix multiple par Années/Mois/Jours</h3>
+			<fieldset style="margin:auto; width:70px; height:80px;">
 				<legend>Années : </legend>
 				<label for="checkbox-2012">2012</label>
-				<input type="checkbox" name="checkbox-2012" id="checkbox-2012">
+				<input type="checkbox" id="checkbox-2012" class="years" value="2012">
 				<label for="checkbox-2013">2013</label>
-				<input type="checkbox" name="checkbox-2013" id="checkbox-2013">
+				<input type="checkbox" id="checkbox-2013" class="years" value="2013">
 			</fieldset>
 		</div>
-		<div class="widget" style="float:left; margin-left:200px; margin-right:50px; width:450px; height:80%;">
-			<fieldset>
+		<div class="widget" id="month" style="float:left; width:50%; height:200px; padding-top:50px; visibility:hidden; display:none;">
+			<fieldset style="margin:auto; width:390px; height:120px;">
 				<legend>Mois : </legend>
 				<label for="checkbox-Janvier">Janvier</label>
-				<input type="checkbox" name="checkbox-1" id="checkbox-Janvier">
+				<input type="checkbox" id="checkbox-Janvier" class="months" value="01">
 				<label for="checkbox-Fevrier">Février</label>
-				<input type="checkbox" name="checkbox-Fevrier" id="checkbox-Fevrier">
+				<input type="checkbox" id="checkbox-Fevrier" class="months" value="02">
 				<label for="checkbox-Mars">Mars</label>
-				<input type="checkbox" name="checkbox-Mars" id="checkbox-Mars">
+				<input type="checkbox" id="checkbox-Mars" class="months" value="03">
 				<label for="checkbox-Avril">Avril</label>
-				<input type="checkbox" name="checkbox-Avril" id="checkbox-Avril">
+				<input type="checkbox" id="checkbox-Avril" class="months" value="04">
 				<label for="checkbox-Mai">Mai</label>
-				<input type="checkbox" name="checkbox-Mai" id="checkbox-Mai">
+				<input type="checkbox" id="checkbox-Mai" class="months" value="05">
 				<label for="checkbox-Juin">Juin</label>
-				<input type="checkbox" name="checkbox-Juin" id="checkbox-Juin">
+				<input type="checkbox" id="checkbox-Juin" class="months" value="06">
 				<label for="checkbox-Juillet">Juillet</label>
-				<input type="checkbox" name="checkbox-Juillet" id="checkbox-Juillet">
+				<input type="checkbox" id="checkbox-Juillet" class="months" value="07">
 				<label for="checkbox-Aout">Août</label>
-				<input type="checkbox" name="checkbox-Aout" id="checkbox-Aout">
+				<input type="checkbox" id="checkbox-Aout" class="months" value="08">
 				<label for="checkbox-Septembre">Septembre</label>
-				<input type="checkbox" name="checkbox-Septembre" id="checkbox-Septembre">
+				<input type="checkbox" id="checkbox-Septembre" class="months" value="09">
 				<label for="checkbox-Octobre">Octobre</label>
-				<input type="checkbox" name="checkbox-Octobre" id="checkbox-Octobre">
+				<input type="checkbox" id="checkbox-Octobre" class="months" value="10">
 				<label for="checkbox-Novembre">Novembre</label>
-				<input type="checkbox" name="checkbox-Novembre" id="checkbox-Novembre">
+				<input type="checkbox" id="checkbox-Novembre" class="months" value="11">
 				<label for="checkbox-Decembre">Décembre</label>
-				<input type="checkbox" name="checkbox-Decembre" id="checkbox-Decembre">
+				<input type="checkbox" id="checkbox-Decembre" class="months" value="12">
 			</fieldset>
 		</div>
-		<div class="widget" style="float:right; width:500px; height:80%;">
-			<fieldset>
+		<div class="widget" id="day" style="float:left; margin-left:30%; width:70%; height:200px; visibility:hidden; display:none;">
+			<fieldset style="margin:auto; width:450px; height:150px;">
 				<legend>Jours : </legend>
 				<label for="checkbox-01">01</label>
-				<input type="checkbox" name="checkbox-01" id="checkbox-01">
+				<input type="checkbox" id="checkbox-01" class="days" value="01">
 				<label for="checkbox-02">02</label>
-				<input type="checkbox" name="checkbox-02" id="checkbox-02">
+				<input type="checkbox" id="checkbox-02" class="days" value="02">
 				<label for="checkbox-03">03</label>
-				<input type="checkbox" name="checkbox-03" id="checkbox-03">
+				<input type="checkbox" id="checkbox-03" class="days" value="03">
 				<label for="checkbox-04">04</label>
-				<input type="checkbox" name="checkbox-04" id="checkbox-04">
+				<input type="checkbox" id="checkbox-04" class="days" value="04">
 				<label for="checkbox-05">05</label>
-				<input type="checkbox" name="checkbox-05" id="checkbox-05">
+				<input type="checkbox" id="checkbox-05" class="days" value="05">
 				<label for="checkbox-06">06</label>
-				<input type="checkbox" name="checkbox-06" id="checkbox-06">
+				<input type="checkbox" id="checkbox-06" class="days" value="06">
 				<label for="checkbox-07">07</label>
-				<input type="checkbox" name="checkbox-07" id="checkbox-07">
+				<input type="checkbox" id="checkbox-07" class="days" value="07">
 				<label for="checkbox-08">08</label>
-				<input type="checkbox" name="checkbox-08" id="checkbox-08">
+				<input type="checkbox" id="checkbox-08" class="days" value="08">
 				<label for="checkbox-09">09</label>
-				<input type="checkbox" name="checkbox-09" id="checkbox-09">
+				<input type="checkbox" id="checkbox-09" class="days" value="09">
 				<label for="checkbox-10">10</label>
-				<input type="checkbox" name="checkbox-10" id="checkbox-10">
+				<input type="checkbox" id="checkbox-10" class="days" value="10">
 				<label for="checkbox-11">11</label>
-				<input type="checkbox" name="checkbox-11" id="checkbox-11">
+				<input type="checkbox" id="checkbox-11" class="days" value="11">
 				<label for="checkbox-12">12</label>
-				<input type="checkbox" name="checkbox-12" id="checkbox-12">
+				<input type="checkbox" id="checkbox-12" class="days" value="12">
 				<label for="checkbox-13">13</label>
-				<input type="checkbox" name="checkbox-13" id="checkbox-13">
+				<input type="checkbox" id="checkbox-13" class="days" value="13">
 				<label for="checkbox-14">14</label>
-				<input type="checkbox" name="checkbox-14" id="checkbox-14">
+				<input type="checkbox" id="checkbox-14" class="days" value="14">
 				<label for="checkbox-15">15</label>
-				<input type="checkbox" name="checkbox-15" id="checkbox-15">
+				<input type="checkbox" id="checkbox-15" class="days" value="15">
 				<label for="checkbox-16">16</label>
-				<input type="checkbox" name="checkbox-16" id="checkbox-16">
+				<input type="checkbox" id="checkbox-16" class="days" value="16">
 				<label for="checkbox-17">17</label>
-				<input type="checkbox" name="checkbox-17" id="checkbox-17">
+				<input type="checkbox" id="checkbox-17" class="days" value="17">
 				<label for="checkbox-18">18</label>
-				<input type="checkbox" name="checkbox-18" id="checkbox-18">
+				<input type="checkbox" id="checkbox-18" class="days" value="18">
 				<label for="checkbox-19">19</label>
-				<input type="checkbox" name="checkbox-19" id="checkbox-19">
+				<input type="checkbox" id="checkbox-19" class="days" value="19">
 				<label for="checkbox-20">20</label>
-				<input type="checkbox" name="checkbox-20" id="checkbox-20">
+				<input type="checkbox" id="checkbox-20" class="days" value="20">
 				<label for="checkbox-21">21</label>
-				<input type="checkbox" name="checkbox-21" id="checkbox-21">
+				<input type="checkbox" id="checkbox-21" class="days" value="21">
 				<label for="checkbox-22">22</label>
-				<input type="checkbox" name="checkbox-22" id="checkbox-22">
+				<input type="checkbox" id="checkbox-22" class="days" value="22">
 				<label for="checkbox-23">23</label>
-				<input type="checkbox" name="checkbox-23" id="checkbox-23">
+				<input type="checkbox" id="checkbox-23" class="days" value="23">
 				<label for="checkbox-24">24</label>
-				<input type="checkbox" name="checkbox-24" id="checkbox-24">
+				<input type="checkbox" id="checkbox-24" class="days" value="24">
 				<label for="checkbox-25">25</label>
-				<input type="checkbox" name="checkbox-25" id="checkbox-25">
+				<input type="checkbox" id="checkbox-25" class="days" value="25">
 				<label for="checkbox-26">26</label>
-				<input type="checkbox" name="checkbox-26" id="checkbox-26">
+				<input type="checkbox" id="checkbox-26" class="days" value="26">
 				<label for="checkbox-27">27</label>
-				<input type="checkbox" name="checkbox-27" id="checkbox-27">
+				<input type="checkbox" id="checkbox-27" class="days" value="27">
 				<label for="checkbox-28">28</label>
-				<input type="checkbox" name="checkbox-28" id="checkbox-28">
+				<input type="checkbox" id="checkbox-28" class="days" value="28">
 				<label for="checkbox-29">29</label>
-				<input type="checkbox" name="checkbox-29" id="checkbox-29">
+				<input type="checkbox" id="checkbox-29" class="days" value="29">
 				<label for="checkbox-30">30</label>
-				<input type="checkbox" name="checkbox-30" id="checkbox-30">
+				<input type="checkbox" id="checkbox-30" class="days" value="30">
 				<label for="checkbox-31">31</label>
-				<input type="checkbox" name="checkbox-31" id="checkbox-31">
+				<input type="checkbox" id="checkbox-31" class="days" value="31">
 			</fieldset>
+		</div>
+		
+		<div id="date" style="float:left; margin:auto; width:70%; height:250px;">
+			<h3 style="text-align:center;">Choix par un intervalle de date</h3>
+			<form style="text-align:center;">
+			Date de début: <input type="date" id="beginDate" class="dates" min="2012-01-01" max="2013-12-31"><br>
+			Date de fin: <input type="date" id="endDate" class="dates" min="2012-01-01" max="2013-12-31">
+			</form>
+		</div>
+	
+		<div class="widget" id="arrondissement" style="float:left; margin-top:20px; width:50%; height:250px;">
+			<h3 style="text-align:center;">Choix multiple des arrondissements</h3>
+			<fieldset style="margin:auto; width:400px; height:120px;">
+				<legend>Arrondissements : </legend>
+				<label for="checkbox-A01">01</label>
+				<input type="checkbox" id="checkbox-A01" class="arrondissements" value="75001">
+				<label for="checkbox-A02">02</label>
+				<input type="checkbox" id="checkbox-A02" class="arrondissements" value="75002">
+				<label for="checkbox-A03">03</label>
+				<input type="checkbox" id="checkbox-A03" class="arrondissements" value="75003">
+				<label for="checkbox-A04">04</label>
+				<input type="checkbox" id="checkbox-A04" class="arrondissements" value="75004">
+				<label for="checkbox-A05">05</label>
+				<input type="checkbox" id="checkbox-A05" class="arrondissements" value="75005">
+				<label for="checkbox-A06">06</label>
+				<input type="checkbox" id="checkbox-A06" class="arrondissements" value="75006">
+				<label for="checkbox-A07">07</label>
+				<input type="checkbox" id="checkbox-A07" class="arrondissements" value="75007">
+				<label for="checkbox-A08">08</label>
+				<input type="checkbox" id="checkbox-A08" class="arrondissements" value="75008">
+				<label for="checkbox-A09">09</label>
+				<input type="checkbox" id="checkbox-A09" class="arrondissements" value="75009">
+				<label for="checkbox-A10">10</label>
+				<input type="checkbox" id="checkbox-A10" class="arrondissements" value="75010">
+				<label for="checkbox-A11">11</label>
+				<input type="checkbox" id="checkbox-A11" class="arrondissements" value="75011">
+				<label for="checkbox-A12">12</label>
+				<input type="checkbox" id="checkbox-A12" class="arrondissements" value="75012">
+				<label for="checkbox-A13">13</label>
+				<input type="checkbox" id="checkbox-A13" class="arrondissements" value="75013">
+				<label for="checkbox-A14">14</label>
+				<input type="checkbox" id="checkbox-A14" class="arrondissements" value="75014">
+				<label for="checkbox-A15">15</label>
+				<input type="checkbox" id="checkbox-A15" class="arrondissements" value="75015">
+				<label for="checkbox-A16">16</label>
+				<input type="checkbox" id="checkbox-A16" class="arrondissements" value="75016">
+				<label for="checkbox-A17">17</label>
+				<input type="checkbox" id="checkbox-A17" class="arrondissements" value="75017">
+				<label for="checkbox-A18">18</label>
+				<input type="checkbox" id="checkbox-A18" class="arrondissements" value="75018">
+				<label for="checkbox-A19">19</label>
+				<input type="checkbox" id="checkbox-A19" class="arrondissements" value="75019">
+				<label for="checkbox-A20">20</label>
+				<input type="checkbox" id="checkbox-A20" class="arrondissements" value="75020">
+			</fieldset>
+		</div>
+		
+		<div id="heure" style="float:right; width:50%; height:150px; margin-top:20px;">
+			<h3 style="text-align:center;">Choix d'un intervalle d'heure</h3>
+			<form style="text-align:center;">
+			Heure de début: <input type="time" id="beginHour" class="hours">
+			<br />
+			Heure de fin: <input type="time" id="endHour" class="hours">
+			</form>
+		</div>
+	
+		<div style="float:right; width:50%; text-align:center; margin-top:20px;">
+			<input type="button" value="Visualiser" onclick="processForm()" style="border-radius:8px; padding:12px 28px; font-size:16px;"/>
 		</div>
 	</div>
 	
-	<div class="widget" style="margin:auto; height:210px;">
-		<h3 style="text-align:center;">Choix multiple des arrondissements</h3>
-		<fieldset style="margin:auto; width:25%;">
-			<legend>Arrondissements : </legend>
-			<label for="checkbox-A01">01</label>
-			<input type="checkbox" name="checkbox-A01" id="checkbox-A01">
-			<label for="checkbox-A02">02</label>
-			<input type="checkbox" name="checkbox-A02" id="checkbox-A02">
-			<label for="checkbox-A03">03</label>
-			<input type="checkbox" name="checkbox-A03" id="checkbox-A03">
-			<label for="checkbox-A04">04</label>
-			<input type="checkbox" name="checkbox-A04" id="checkbox-A04">
-			<label for="checkbox-A05">05</label>
-			<input type="checkbox" name="checkbox-A05" id="checkbox-A05">
-			<label for="checkbox-A06">06</label>
-			<input type="checkbox" name="checkbox-A06" id="checkbox-A06">
-			<label for="checkbox-A07">07</label>
-			<input type="checkbox" name="checkbox-A07" id="checkbox-A07">
-			<label for="checkbox-A08">08</label>
-			<input type="checkbox" name="checkbox-A08" id="checkbox-A08">
-			<label for="checkbox-A09">09</label>
-			<input type="checkbox" name="checkbox-A09" id="checkbox-A09">
-			<label for="checkbox-A10">10</label>
-			<input type="checkbox" name="checkbox-A10" id="checkbox-A10">
-			<label for="checkbox-A11">11</label>
-			<input type="checkbox" name="checkbox-A11" id="checkbox-A11">
-			<label for="checkbox-A12">12</label>
-			<input type="checkbox" name="checkbox-A12" id="checkbox-A12">
-			<label for="checkbox-A13">13</label>
-			<input type="checkbox" name="checkbox-A13" id="checkbox-A13">
-			<label for="checkbox-A14">14</label>
-			<input type="checkbox" name="checkbox-A14" id="checkbox-A14">
-			<label for="checkbox-A15">15</label>
-			<input type="checkbox" name="checkbox-A15" id="checkbox-A15">
-			<label for="checkbox-A16">16</label>
-			<input type="checkbox" name="checkbox-A16" id="checkbox-A16">
-			<label for="checkbox-A17">17</label>
-			<input type="checkbox" name="checkbox-A17" id="checkbox-A17">
-			<label for="checkbox-A18">18</label>
-			<input type="checkbox" name="checkbox-A18" id="checkbox-A18">
-			<label for="checkbox-A19">19</label>
-			<input type="checkbox" name="checkbox-A19" id="checkbox-A19">
-			<label for="checkbox-A20">20</label>
-			<input type="checkbox" name="checkbox-A20" id="checkbox-A20">
-		</fieldset>
-	</div>
+	<div id="map" style="margin-bottom:50px; border: 3px solid black"></div>
 	
-	<div id="overlay" style="margin:auto; height:80px;">
-		<h3 style="text-align:center;">Choix par un intervalle de date</h3>
-		<form style="text-align:center;">
-		Date de début: <input type="date" id="beginDate" name="beginDate" value="2012-01-01" min="2012-01-01" max="2013-12-31"><br>
-		Date de fin: <input type="date" id="endDate" name="endDate" value="2012-01-01" min= "2012-01-01" max="2013-12-31">
-		</form>
-    </div>
-    
-    <div id="overlay2" style="margin:auto; height:100px;">
-		<h3 style="text-align:center;">Choix d'un intervalle d'heure</h3>
-		<form style="text-align:center;">
-		Heure de début: <input type="time" id="beginHour" name="beginHour" value="09:00">
-		<br />
-		Heure de fin: <input type="time" id="endHour" name="endHour" value="12:00">
-		</form>
-	</div>
-  	<br />
-	<div id="map"></div>
+	<script>
+	function processForm() {
+		// Variable ou l'on va stocker les parametres de l'utilisateur
+		var parameters = [];
+		
+		if(document.getElementById('multiple').checked == true) {
+			// Recuperation des Annees
+			var inputs = document.getElementsByClassName('years');
+			years = [];
+			for(var i = 0; i < inputs.length; ++i) {
+				if(inputs[i].checked) {
+					years.push(inputs[i].value);
+				}
+			}
+			parameters.push({ "years": years });
+		
+			// Recuperation des Mois
+			var inputs = document.getElementsByClassName('months');
+			months = [];
+			for(var i = 0; i < inputs.length; ++i) {
+				if(inputs[i].checked) {
+					months.push(inputs[i].value);
+				}
+			}
+			parameters.push({ "months": months });
+		
+			// Recuperation des Jours
+			var inputs = document.getElementsByClassName('days');
+			days = [];
+			for(var i = 0; i < inputs.length; ++i) {
+				if(inputs[i].checked) {
+					days.push(inputs[i].value);
+				}
+			}
+			parameters.push({ "days": days });
+		} else {
+			parameters.push({ "years": [] });
+			parameters.push({ "months": [] });
+			parameters.push({ "days": [] });
+		}
+		
+		// Recuperation des Arrondissements
+		var inputs = document.getElementsByClassName('arrondissements');
+		arrondissements = [];
+		for(var i = 0; i < inputs.length; ++i) {
+			if(inputs[i].checked) {
+				arrondissements.push(parseInt(inputs[i].value));
+			}
+		}
+		parameters.push({ "arrondissements": arrondissements });
+		
+		if(document.getElementById('intervalle').checked == true) {
+			// Recuperation de l'intervalle de dates
+			var inputs = document.getElementsByClassName('dates');
+			dates = [];
+			for(var i = 0; i < inputs.length; ++i) {
+				if(inputs[i].value != "") {
+					dates.push(inputs[i].value);
+				}
+			}
+			if(dates.length == 2) { 
+				parameters.push({ "dates": dates }); 
+			} else {
+				parameters.push({ "dates": [] });
+			}
+		} else {
+			parameters.push({ "dates": [] });
+		}
+		
+		// Recuperation de l'intervalle d'heures
+		var inputs = document.getElementsByClassName('hours');
+		hours = [];
+		for(var i = 0; i < inputs.length; ++i) {
+			if(inputs[i].value != "") {
+				hours.push(inputs[i].value);
+			}
+		}
+		if(hours.length == 2) {
+			parameters.push({ "hours": hours });
+		} else { 
+			parameters.push({ "hours": [] });
+		}
+		
+		console.log(parameters);
+		
+		// Mise a jour de la visualisation
+		visualisation(parameters);
+	};
+	</script>
+	
+	
 
    <!-- include cartodb.js library -->
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
@@ -462,68 +607,74 @@
 		 	}
 		 }
          
-		///*******************************************///
-		///*******************************************///
-		///*******************************************///
 		
 		
-		d3.json("data/accidentologie-paris.geojson", function(data) {
-			// create a first guess for the projection
-			var center = d3.geoCentroid(data);
-			var scale  = 15000;
-			var offset = [mapbreakwidth/2, bigmapheight/2];
-			var projection = d3.geoMercator().scale(scale).center(center).translate(offset);
+		///*******************************************///
+		///********** Partie Visualisation ***********///
+		///*******************************************///
+		
+		function visualisation(parameters) {
+			d3.json("data/accidentologie-paris.geojson", function(data) {
+				// create a first guess for the projection
+				var center = d3.geoCentroid(data);
+				var scale  = 15000;
+				var offset = [mapbreakwidth/2, bigmapheight/2];
+				var projection = d3.geoMercator().scale(scale).center(center).translate(offset);
 	
-			// create the path
-			var path = d3.geoPath().projection(projection);
+				// create the path
+				var path = d3.geoPath().projection(projection);
 	
-			// using the path determine the bounds of the current map and use 
-			// these to determine better values for the scale and translation
-			var bounds  = path.bounds(data);
-			var hscale  = scale*mapbreakwidth  / (bounds[1][0] - bounds[0][0]);
-			var vscale  = scale*bigmapheight / (bounds[1][1] - bounds[0][1]);
-			var scale   = (hscale < vscale) ? hscale : vscale;
-			var offset  = [mapbreakwidth - (bounds[0][0] + bounds[1][0])/2,
-							bigmapheight - (bounds[0][1] + bounds[1][1])/2];
+				// using the path determine the bounds of the current map and use 
+				// these to determine better values for the scale and translation
+				var bounds  = path.bounds(data);
+				var hscale  = scale*mapbreakwidth  / (bounds[1][0] - bounds[0][0]);
+				var vscale  = scale*bigmapheight / (bounds[1][1] - bounds[0][1]);
+				var scale   = (hscale < vscale) ? hscale : vscale;
+				var offset  = [mapbreakwidth - (bounds[0][0] + bounds[1][0])/2,
+								bigmapheight - (bounds[0][1] + bounds[1][1])/2];
 	
-			// new projection
-			projection = d3.geoMercator().center(center).scale(scale).translate(offset);
-			path = path.projection(projection);
+				// new projection
+				projection = d3.geoMercator().center(center).scale(scale).translate(offset);
+				path = path.projection(projection);
 			
 			
-			console.log(data.features);
-		        
-		    // Contient la liste des centres de chaque zone ainsi que leurs statistiques
-		    // zones = [ {center: [0]->x, [1]->y; stats: { nbAcc, Indem, BL, BH } } ]
-		    zones = [];
-		    
-		   // Contient la liste des accidents classe par zone
-		   // liste_accidents = [ {zone: id; accident: detail} ]
-		    liste_accidents = [];
-		    
-		    // Test 1 (filtrage par un intervalle de date)
-		    //getZones(data.features, 0.01, [75020, 75013], ["2013"], ["04","10"], ["07","22"], ["09:00","12:35"], ["2012-12-23", "2013-01-02"]);
-		    
-		    // Test 2 (filtrage par annees - mois - jours en particulier)
-		    //getZones(data.features, 0.01, [], ["2013","2012"], ["04"], ["07"], [], []);
-		    
-		    // Test 3 (sans filtrage)
-		    getZones(data.features, 0.01, [], [], [], [], [], []);
-		    
-		    graph = {"zones": zones, "accidents": liste_accidents};
-		   	console.log(graph);
-		   	
+				console.log(data.features);
+				    
+				// Contient la liste des centres de chaque zone ainsi que leurs statistiques
+				// zones = [ {center: [0]->x, [1]->y; stats: { nbAcc, Indem, BL, BH } } ]
+				zones = [];
+				
+			   // Contient la liste des accidents classe par zone
+			   // liste_accidents = [ {zone: id; accident: detail} ]
+				liste_accidents = [];
+				
+				// Test 1 (filtrage par un intervalle de date)
+				//getZones(data.features, 0.01, [75020, 75013], ["2013"], ["04","10"], ["07","22"], ["09:00","12:35"], ["2012-12-23", "2013-01-02"]);
+				
+				// Test 2 (filtrage par annees - mois - jours en particulier)
+				//getZones(data.features, 0.01, [], ["2013","2012"], ["04"], ["07"], [], []);
+				
+				// Test 3 (sans filtrage)
+				//getZones(data.features, 0.01, [], [], [], [], [], []);
+				
+				// Recuperation des zones selon parameters
+				getZones(data.features, 0.01, parameters[3].arrondissements, parameters[0].years, parameters[1].months, parameters[2].days, parameters[5].hours, parameters[4].dates);
+				
+				graph = {"zones": zones, "accidents": liste_accidents};
+			   	console.log(graph);
+			   	
 			
-		   	// TODO Tentative d'ajout des zones
-			/*g.selectAll("circle")
-			.data(graph.zones)
-			.enter()
-			.append("circle")
-			.attr("cx", function (d) { return projection(d.center)[0]; })
-			.attr("cy", function (d) { return projection(d.center)[1]; })
-			.attr("r", 10)
-			.attr("fill", "blue");*/
-	   	});
+			   	// TODO Tentative d'ajout des zones
+				/*g.selectAll("circle")
+				.data(graph.zones)
+				.enter()
+				.append("circle")
+				.attr("cx", function (d) { return projection(d.center)[0]; })
+				.attr("cy", function (d) { return projection(d.center)[1]; })
+				.attr("r", 10)
+				.attr("fill", "blue");*/
+		   	});
+	   	}
     </script>
   </body>
 </html>
