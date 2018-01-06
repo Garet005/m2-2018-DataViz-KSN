@@ -246,15 +246,7 @@
 
 
       <script>
-         /*
-                      <div id="canvas" style="position:relative; margin:auto; width:960px; height:960px; margin-bottom:50px; background-color:blue;">
-                  		<div id="map" style="border:3px solid black; background-color:red;"></div>
-                  	</div>
-                  	*/
-
-         //  function main() 
-
-         var bigmapheight = 650;
+		var bigmapheight = 650;
          var smallmapheight = 300;
          var mapbreakwidth = 720;
          var highzoom = 11;
@@ -314,15 +306,20 @@
          var width = 960,
             height = 650;
 
-         //width = d3.select("#map")._groups[0][0].clientWidth,
-         //height = d3.select("#map")._groups[0][0].clientHeight;
-         //console.log("width : " + width + "\theight : " + height);
-
          var projection = d3.geoMercator()
             .scale((width - 3) / (2 * Math.PI))
             .translate([width / 2, height / 2]);
 
          var path = d3.geoPath().projection(projection);
+         
+         function getPas() {
+			currentZoom = map.getZoom();
+			console.log(currentZoom);
+			
+		}
+		
+		// Couche ou seront affiches les markers
+		var markersLayer = new L.LayerGroup();
 
 
          hoverName = d3.select('.hover-info').select('.name');
@@ -332,6 +329,11 @@
          ///*******************************************///
 
          function visualisation(parameters) {
+         	// On efface le precedent svg
+			d3.select("svg").remove();
+			// On efface les anciens markers
+			markersLayer.clearLayers();
+         	
             d3.json("data/accidentologie-paris.geojson", function(data) {
 
                console.log(data.features);
@@ -374,25 +376,27 @@
                	L.marker([graph.zones[i].center[0], graph.zones[i].center[1]]).addTo(map);
                }*/
 
-               // Affichage des accidents 1 par 1 avec des tokens
-               /*
-               for(var i = 0; i < graph.accidents.length; ++i) {
-               	coord = graph.accidents[i].accident.geometry.coordinates;
-               	L.marker([coord[1], coord[0]]).addTo(map);
-               }
-               */
+               // TODO gestion des popups
+				// Affichage des accidents seul dans leur zone (avec un marker)
+				for(var i = 0; i < graph.accidents.length; ++i) {
+					attachedZone = graph.zones[graph.accidents[i].zone];
+					if(attachedZone.stats.nbAcc == 1) {
+						coord = graph.accidents[i].accident.geometry.coordinates;
+						
+						var marker = L.marker([coord[1], coord[0]]);
+							
+						markersLayer.addLayer(marker);
+						
+						var popup = L.popup()
+							.setLatLng([coord[1], coord[0]])
+							.setContent((attachedZone.stats.nbAcc).toString());
+						marker.bindPopup(popup).openPopup();
+						popup.addTo(map);
+					}
+				}
+				markersLayer.addTo(map);
 
-               // TODO Ajout des zones avec des cercles
-               /*svg.append("g").selectAll("circle")
-               	.data(graph.zones)
-               	.enter()
-               	.append("circle")
-               	.attr("r", 50)
-               	.attr("fill", "red")
-               	.attr("cx", function (d) { console.log(projection(d.center)[0]); return projection(d.center)[0]; })
-               	.attr("cy", function (d) { console.log(projection(d.center)[1]); return projection(d.center)[1]; })*/
 
-               // Add a LatLng object to each item in the dataset
                graph.zones.forEach(function(d) {
                   d.LatLng = new L.LatLng(d.center[0],
                      d.center[1])
@@ -410,23 +414,29 @@
                features.on('mouseenter', mouseenter);
                features.on('mouseleave', mouseleave);
                update();
+               
+               map.on('move', function() {
+					move();
+				});
+				move();
 
                function update() {
                   currentZoom = map.getZoom();
-
-                  // reposotion dots
                   features.attr("transform",
                      function(d) {
                         return "translate(" +
                            map.latLngToLayerPoint(d.LatLng).x + "," +
                            map.latLngToLayerPoint(d.LatLng).y + ")";
                      })
-
-                  /*function projectPoint(x, y) {
-                  	var point = map.latLngToLayerPoint(new L.LatLng(y, x));
-                  	this.stream.point(point.x, point.y);
-                  }*/
                }
+               
+               function move() {
+					var bounds = map.getBounds();
+					var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
+					var bottomRight = map.latLngToLayerPoint(bounds.getSouthEast());
+					g.attr('transform', 'translate('+ -topLeft.x + ',' + -topLeft.y + ')');
+				}
+				
             });
 
             function mouseenter() {
