@@ -155,8 +155,8 @@
          <div id="date" style="float:left; margin:auto; width:70%; height:250px;">
             <h3 style="text-align:center;">Choix par un intervalle de date</h3>
             <form style="text-align:center;">
-               Date de début: <input type="date" id="beginDate" class="dates" min="2012-01-01" max="2013-12-31"><br> Date de fin: <input type="date" id="endDate"
-                  class="dates" min="2012-01-01" max="2013-12-31">
+               Date de début: <input type="date" id="beginDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01"><br> 
+               Date de fin: <input type="date" id="endDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01">
             </form>
          </div>
 
@@ -220,10 +220,26 @@
          </div>
       </div>
 
-      <ul class="hover-info">
-         <li class="type"></li>
-         <li class="name"></li>
-      </ul>
+        <div style= "display:inline-block;">
+            <ul class="hover-info">
+                <li class="nbacc"></li>
+                <li class="bh"></li>
+                <li class="bl"></li>
+                <li class="buscar"></li>
+                <li class="conducteur"></li>
+                <li class="fuite"></li>
+                <li class="indem"></li>
+                <li class="moto"></li>
+                <li class="passage"></li>
+                <li class="pieton"></li>
+                <li class="poidslourd"></li>
+                <li class="scooter"></li>
+                <li class="tram"></li>
+                <li class="vehiculeutilitaire"></li>
+                <li class="velo"></li>
+                <li class="voiture"></li>
+            </ul>
+      </div>
 
       <div id="map" style="margin:auto; width:960px; height:650px; margin-bottom:50px; border:3px solid black;">
       </div>
@@ -307,6 +323,9 @@
             .translate([width / 2, height / 2]);
 
          var path = d3.geoPath().projection(projection);
+
+
+         hoverName = d3.select('.hover-info').select('.name');
 
          ///*******************************************///
          ///********** Partie Visualisation ***********///
@@ -413,20 +432,25 @@
             function mouseenter() {
                d3.select(this).style('fill-opacity', 1);
 
-            //TODO modifier props et t, l'affichage devrait être géré... Enfin oui et non, y a un affichage, juste pas le bon
-               var props = d3.select(this).data()[0].properties;
-               var t = props['amenity']
-                  .split('/')
-                  .map(function(v) {
-                     return v.charAt(0).toUpperCase() + v.slice(1);
-                  })
-                  .join('/');
-               var n = props['name'];
-               hoverType.html('<label>Type</label><p>&nbsp;' + t + '</p>');
-               hoverName.html(
-                  n !== null ? '<label>Name</label><p>&nbsp;' + n + '</p>' : ''
-               );
-
+               var props = d3.select(this).data()[0].stats;
+//Les variables ici ne sont pas forcément nulles, le test s'effectue bien et les variables se remplissent convenablement, elles restent remplies tant qu'on ne passe pas sur un autre cercle
+//Une fois sur un autre cercle, elles changent leurs valeurs
+               hoverName.html( props.nbAcc !== 0 ? '<label>nbacc</label><p>&nbsp;' + props.nbAcc + '</p>' : '')
+               hoverName.html( props.BH !== 0 ? '<label>bh</label><p>&nbsp;' + props.BH + '</p>' : '')
+               hoverName.html( props.BL !== 0 ? '<label>bl</label><p>&nbsp;' + props.BL + '</p>' : '')
+               hoverName.html( props.BusCar !== 0 ? '<label>buscar</label><p>&nbsp;' + props.BusCar + '</p>' : '')
+               hoverName.html( props.Conducteur !== 0 ? '<label>conducteur</label><p>&nbsp;' + props.Conducteur + '</p>' : '')
+               hoverName.html( props.Fuite !== 0 ? '<label>fuite</label><p>&nbsp;' + props.Fuite + '</p>' : '')
+               hoverName.html( props.Indem !== 0 ? '<label>indem</label><p>&nbsp;' + props.Indem + '</p>' : '')
+               hoverName.html( props.Moto !== 0 ? '<label>moto</label><p>&nbsp;' + props.Moto + '</p>' : '')
+               hoverName.html( props.Passage !== 0 ? '<label>passage</label><p>&nbsp;' + props.Passage + '</p>' : '')
+               hoverName.html( props.Pieton !== 0 ? '<label>pieton</label><p>&nbsp;' + props.Pieton + '</p>' : '')
+               hoverName.html( props.PoidsLourd !== 0 ? '<label>poidslourd</label><p>&nbsp;' + props.PoidsLourd + '</p>' : '')
+               hoverName.html( props.Scooter !== 0 ? '<label>scooter</label><p>&nbsp;' + props.Scooter + '</p>' : '')
+               hoverName.html( props.Tram !== 0 ? '<label>tram</label><p>&nbsp;' + props.Tram + '</p>' : '')
+               hoverName.html( props.VehiculeUtilitaire !== 0 ? '<label>vehiculeutilitaire</label><p>&nbsp;' + props.VehiculeUtilitaire + '</p>' : '')
+               hoverName.html( props.Velo !== 0 ? '<label>velo</label><p>&nbsp;' + props.Velo + '</p>' : '')
+               hoverName.html( props.Voiture !== 0 ? '<label>voiture</label><p>&nbsp;' + props.Voiture + '</p>' : '')
             }
 
             function mouseleave() {
