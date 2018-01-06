@@ -155,8 +155,8 @@
          <div id="date" style="float:left; margin:auto; width:70%; height:250px;">
             <h3 style="text-align:center;">Choix par un intervalle de date</h3>
             <form style="text-align:center;">
-               Date de début: <input type="date" id="beginDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01"><br> 
-               Date de fin: <input type="date" id="endDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01">
+               Date de début: <input type="date" id="beginDate" class="dates" min="2012-01-01" max="2013-12-31""><br> 
+               Date de fin: <input type="date" id="endDate" class="dates" min="2012-01-01" max="2013-12-31"">
             </form>
          </div>
 
@@ -337,6 +337,11 @@
                 hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire')
                 hovervelo = d3.select('.hover-info').select('.velo'),
                 hovervoiture = d3.select('.hover-info').select('.voiture');
+		
+		// Gestion de la taille des cercles en fonction du niveau de zoom
+		var sizeTable = {"11": 7, "12": 14, "13": 28, "14": 56, "15": 112, "16": 224, "17": 448, "18": 896}; 
+		
+
 
          ///*******************************************///
          ///********** Partie Visualisation ***********///
@@ -420,9 +425,9 @@
                   .data(graph.zones)
                   .enter().append("circle")
                   .style("stroke", "black")
-                  .style('fill-opacity', 0.3)
+                  .style('fill-opacity', 0.2)
                   .style("fill", "red")
-                  .attr("r", 7);
+                  .attr("r", sizeTable[map.getZoom()]);
 
                map.on("viewreset", update);
                features.on('mouseenter', mouseenter);
@@ -435,13 +440,14 @@
 				move();
 
                function update() {
-                  currentZoom = map.getZoom();
-                  features.attr("transform",
-                     function(d) {
-                        return "translate(" +
-                           map.latLngToLayerPoint(d.LatLng).x + "," +
-                           map.latLngToLayerPoint(d.LatLng).y + ")";
-                     })
+					currentZoom = map.getZoom();
+					features.attr("transform",
+					 function(d) {
+						return "translate(" +
+						   map.latLngToLayerPoint(d.LatLng).x + "," +
+						   map.latLngToLayerPoint(d.LatLng).y + ")";
+					 })
+					g.selectAll("circle").attr("r", sizeTable[currentZoom]);
                }
                
                function move() {
@@ -454,7 +460,7 @@
             });
 
             function mouseenter() {
-               d3.select(this).style('fill-opacity', 1);
+               d3.select(this).style('fill-opacity', 0.4);
 
                var props = d3.select(this).data()[0].stats;
 
