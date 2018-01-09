@@ -220,24 +220,29 @@
          </div>
       </div>
 
-        <div class="hover-info" style="float:right; margin:auto; width:400px; height:650px; margin-bottom:50px; border:3px solid black;">
-            <h3 style="text-align:center;">Statistiques des accidents sur la zone sélectionnée</h3>
-                <h4 class="nbacc"></h4>
-                <h4 class="indem"></h4>
-                <h4 class="conducteur"></h4>
-                <h4 class="passage"></h4>
-                <h4 class="fuite"></h4>
-                <h4 class="bh"></h4>
-                <h4 class="bl"></h4>
-                <h4 class="buscar"></h4>
-                <h4 class="moto"></h4>
-                <h4 class="pieton"></h4>
-                <h4 class="poidslourd"></h4>
-                <h4 class="scooter"></h4>
-                <h4 class="tram"></h4>
-                <h4 class="vehiculeutilitaire"></h4>
-                <h4 class="velo"></h4>
-                <h4 class="voiture"></h4>
+        <div class="hover-info" style="line-height:5px;float:right; margin:auto; width:400px; height:650px; margin-bottom:50px; border:3px solid black;">
+            <h4 style="text-align:center;">Statistiques des accidents sur la zone sélectionnée</h4>
+                <h6 class="nbacc"></h6>
+                <h4 class="PersoImp"></h4>
+                <h6 class="conducteur"></h6>
+                <h6 class="passage"></h6>
+                <h6 class="pieton"></h6>
+                <h4 class="Gravite"></h4>
+                <h6 class="indem"></h6>
+                <h6 class="bl"></h6>
+                <h6 class="bh"></h6>
+                <h4 class="GensFuite"></h4>
+                <h6 class="fuite"></h6>
+                <h4 class="Vehicules"></h4>
+                <h6 class="velo"></h6>
+                <h6 class="scooter"></h6>
+                <h6 class="moto"></h6>
+                <h6 class="voiture"></h6>
+                <h6 class="vehiculeutilitaire"></h6>
+                <h6 class="buscar"></h6>
+                <h6 class="poidslourd"></h6>
+                <h6 class="tram"></h6>
+
       </div>
 
       <div id="map" style="float:left; margin:auto; width:960px; height:650px; margin-bottom:50px; border:3px solid black;">
@@ -320,24 +325,39 @@
 		// Couche ou seront affiches les markers
 		var markersLayer = new L.LayerGroup();
 
-        //Variables servant à l'affichage des statistiques
-         var hovernbacc = d3.select('.hover-info').select('.nbacc'),
-                hoverbh = d3.select('.hover-info').select('.bh'),
-                hoverbl = d3.select('.hover-info').select('.bl'),
-                hoverbuscar = d3.select('.hover-info').select('.buscar')
-                hovercond = d3.select('.hover-info').select('.conducteur'),
-                hoverfuite = d3.select('.hover-info').select('.fuite')
-                hoverindem = d3.select('.hover-info').select('.indem'),
-                hovermoto = d3.select('.hover-info').select('.moto')
+//Variables servant à l'affichage des statistiques
+         //Variable indiquant le nombre d'accidents dans la zone
+         var hovernbacc = d3.select('.hover-info').select('.nbacc');
+
+         //hovertitrepi = PersoImp
+         var hovercond = d3.select('.hover-info').select('.conducteur'),
                 hoverpassage = d3.select('.hover-info').select('.passage'),
-                hoverpieton = d3.select('.hover-info').select('.pieton')
+                hoverpieton = d3.select('.hover-info').select('.pieton');
+
+        //hovertitregrav = Gravite
+        var hoverindem = d3.select('.hover-info').select('.indem'),
+        hoverbl = d3.select('.hover-info').select('.bl'),
+                hoverbh = d3.select('.hover-info').select('.bh');
+
+        //hovertitrefuite = GensFuite
+                var hoverfuite = d3.select('.hover-info').select('.fuite');
+
+        //hovertitrevehicules = Vehicules
+        var hovervelo = d3.select('.hover-info').select('.velo'),
+                hoverscooter = d3.select('.hover-info').select('.scooter'),
+                hovermoto = d3.select('.hover-info').select('.moto'),
+                hovervoiture = d3.select('.hover-info').select('.voiture'),
+                hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
+                hoverbuscar = d3.select('.hover-info').select('.buscar'),
                 hoverpoidslourd = d3.select('.hover-info').select('.poidslourd'),
-                hoverscooter = d3.select('.hover-info').select('.scooter')
-                hovertram = d3.select('.hover-info').select('.tram'),
-                hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire')
-                hovervelo = d3.select('.hover-info').select('.velo'),
-                hovervoiture = d3.select('.hover-info').select('.voiture');
-		
+                hovertram = d3.select('.hover-info').select('.tram');
+
+         //Variables servant a afficher le titre des sections des statistiques
+         var hovertitrepi = d3.select('.hover-info').select('.PersoImp'),
+                hovertitregrav = d3.select('.hover-info').select('.Gravite'),
+                hovertitrefuite = d3.select('.hover-info').select('.GensFuite'),
+                hovertitrevehicules = d3.select('.hover-info').select('.Vehicules');
+
 		// Gestion de la taille des cercles en fonction du niveau de zoom
 		var sizeTable = {"11": 7, "12": 14, "13": 28, "14": 56, "15": 112, "16": 224, "17": 448, "18": 896}; 
 		
@@ -465,27 +485,41 @@
                var props = d3.select(this).data()[0].stats;
 
                hovernbacc.html( props.nbAcc !== 0 ? '<label>nombre d\'accidents</label> : ' + props.nbAcc : '')
-               hoverbh.html( props.BH !== 0 ? '<label>bh ? </label> : ' + props.BH  : '')
-               hoverbl.html( props.BL !== 0 ? '<label>Nombre de blessés légers</label> : ' + props.BL : '')
-               hoverbuscar.html( props.BusCar !== 0 ? '<label>nombre de bus / car impliqués</label> : ' + props.BusCar : '')
-               hovercond.html( props.Conducteur !== 0 ? '<label>Nombre de conducteurs</label> : ' + props.Conducteur : '')
-               hoverfuite.html( props.Fuite !== 0 ? '<label>Nombre de fuites après les accidents</label> : ' + props.Fuite : '')
-               hoverindem.html( props.Indem !== 0 ? '<label>Nombre de personnes indemnes</label> : ' + props.Indem : '')
-               hovermoto.html( props.Moto !== 0 ? '<label>Nombre de motos impliquées</label> : ' + props.Moto : '')
-               hoverpassage.html( props.Passage !== 0 ? '<label>Nombre de passagers impliqués</label> : ' + props.Passage : '')
-               hoverpieton.html( props.Pieton !== 0 ? '<label>Nombre de piétons impliqués</label> : ' + props.Pieton : '')
-               hoverpoidslourd.html( props.PoidsLourd !== 0 ? '<label>Nombre de poids lourds impliqués</label> : ' + props.PoidsLourd : '')
-               hoverscooter.html( props.Scooter !== 0 ? '<label>Nombre de scooters impliqués</label> : ' + props.Scooter : '')
-               hovertram.html( props.Tram !== 0 ? '<label>Nombre de trams impliqués</label> : ' + props.Tram : '')
-               hovervehiutil.html( props.VehiculeUtilitaire !== 0 ? '<label>Nombre de véhicules utilitaires impliqués</label> : ' + props.VehiculeUtilitaire : '')
-               hovervelo.html( props.Velo !== 0 ? '<label>Nombre de vélo impliqués</label> : ' + props.Velo : '')
-               hovervoiture.html( props.Voiture !== 0 ? '<label>Nombre de voitures impliquées</label> : ' + props.Voiture : '')
+               
+               hovertitrepi.html( (props.Voiture !== 0 || props.Passage !== 0 || props.Pieton !== 0) ? '<label>Types de personnes impliquées : \n</label>' : '')
+               hovercond.html( props.Conducteur !== 0 ? '<label>Conducteurs</label> : ' + props.Conducteur : '')
+               hoverpassage.html( props.Passage !== 0 ? '<label>Passagers</label> : ' + props.Passage : '')
+               hoverpieton.html( props.Pieton !== 0 ? '<label>Piétons</label> : ' + props.Pieton : '')
+               
+               hovertitregrav.html( (props.Indem !== 0 || props.BH !== 0 || props.BL !== 0) ? '<label>Types de blessés : \n</label>' : '')
+               hoverindem.html( props.Indem !== 0 ? '<label>Personnes indemnes</label> : ' + props.Indem : '')
+               hoverbl.html( props.BL !== 0 ? '<label>Blessés légers</label> : ' + props.BL : '')
+               hoverbh.html( props.BH !== 0 ? '<label>Blessés hospitalisés </label> : ' + props.BH  : '')
+               
+               hovertitrefuite.html( props.Fuite !== 0 ? '<label>Fuite du\ des lieux d\'accidents : \n</label>' : '')
+               hoverfuite.html( props.Fuite !== 0 ? '<label>Fuites</label> : ' + props.Fuite : '')
+               
+               hovertitrevehicules.html( props.Voiture !== 0 ? '<label>Types de véhicules impliqués</label> : \n' : '')
+               hovervelo.html( props.Velo !== 0 ? '<label>Vélos</label> : ' + props.Velo : '')
+               hoverscooter.html( props.Scooter !== 0 ? '<label>Scooters</label> : ' + props.Scooter : '')
+               hovermoto.html( props.Moto !== 0 ? '<label>Motos</label> : ' + props.Moto : '')
+               hovervoiture.html( props.Voiture !== 0 ? '<label>Voitures</label> : ' + props.Voiture : '')
+               hovervehiutil.html( props.VehiculeUtilitaire !== 0 ? '<label>Véhicules utilitaires</label> : ' + props.VehiculeUtilitaire : '')
+               hoverbuscar.html( props.BusCar !== 0 ? '<label>Bus / Car</label> : ' + props.BusCar : '')
+               hoverpoidslourd.html( props.PoidsLourd !== 0 ? '<label>Poids lourds</label> : ' + props.PoidsLourd : '')
+               hovertram.html( props.Tram !== 0 ? '<label>Trams</label> : ' + props.Tram : '')
             }
 
             function mouseleave() {
                d3.select(this).style('fill-opacity', 0.2);
             }
          }
+/*
+                hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
+                hoverbuscar = d3.select('.hover-info').select('.buscar'),
+                hoverpoidslourd = d3.select('.hover-info').select('.poidslourd'),
+                hovertram = d3.select('.hover-info').select('.tram');
+*/
       </script>
    </body>
 
