@@ -220,7 +220,7 @@
          </div>
       </div>
 
-      <div class="hover-info" style="line-height:5px;float:right; margin:auto; width:400px; height:650px; margin-bottom:50px; border:3px solid black;">
+      <div class="hover-info" style="line-height:5px; float:left; margin:auto; width:400px; height:650px; margin-bottom:50px; margin-left:50px; border:3px solid black;">
          <h4 style="text-align:center;">Statistiques des accidents sur la zone sélectionnée</h4>
          <h6 class="nbacc"></h6>
          <h4 class="PersoImp"></h4>
@@ -245,8 +245,9 @@
 
       </div>
 
-      <div id="map" style="float:left; margin:auto; width:960px; height:650px; margin-bottom:50px; border:3px solid black;">
-      </div>
+      <div id="map" style="float:left; width:960px; height:650px; border:3px solid black;"></div>
+      
+      <div id="legend" style="float:left; margin-bottom:100px; width:962px; height:100px; border:2px solid black;"></div>
 
 
       <script>
@@ -369,6 +370,60 @@
             "17": 448,
             "18": 896
          };
+         
+         
+         /*** On dessine la legende ***/
+		 // 7 couleurs
+		 var colors = ["rgb(130, 224, 170)", "rgb(80, 255, 51)", "rgb(172, 203, 46  )", "rgb(246, 255, 51)", "rgb(230, 126, 34)", "rgb(192, 57, 43)", "rgb(100, 30, 22)"];
+		
+		 var color = d3.scaleQuantize()
+					.range(colors);
+         color.domain([0,700]);
+         
+         d3.select("#legend")
+			 .append("p")
+			 .text("Légende :")
+			 .style("float", "left")
+			 .style("width", "150px")
+			 .style("font-weight", "bold")
+			 .style("margin-top", "10px")
+			 .style("margin-left", "30px")
+			 .style("margin-bottom", "0px");
+        
+         var legendSvg = d3.select("#legend")
+        	.append("svg")
+    		.style("height", "30px")
+	    	.style("width", "750px")
+	    	.style("margin-left", "163px");
+	    
+	     // taille des rectangles
+	     var w = [100, 200, 300, 400, 500, 600, 750];
+         for(var i = colors.length-1; i >= 0; --i) {
+    	 	legendSvg.append("rect")
+		    	.style("height", "30px")
+		    	.style("width", w[i])
+		    	.style("fill", colors[i]);
+         }
+        
+    	 d3.select("#legend")
+			 .append("p")
+			 .text("Nombre d'accident")
+			 .style("float", "left")
+			 .style("width", "150px")
+			 .style("margin-top", "0px")
+			 .style("margin-left", "30px");
+    	
+    	 for(var i = -1; i < colors.length-1; ++i) {
+			 d3.select("#legend")
+			 .append("p")
+			 .text(function() { if(i == -1) { return 0; } else { return w[i]; } })
+			 .style("float", "left")
+			 .style("width", function() { if(i == -1) { return "90px"; } else { return "100px"; } })
+			 .style("margin-top", "0px")
+         }
+		 /*********************************/
+
+
 
          ///*******************************************///
          ///********** Partie Visualisation ***********///
@@ -376,7 +431,7 @@
 
          function visualisation(parameters) {
             // On efface le precedent svg
-            d3.select("svg").remove();
+			//d3.selectAll("svg").remove();
             // On efface les anciens markers
             markersLayer.clearLayers();
 
@@ -422,7 +477,6 @@
                	L.marker([graph.zones[i].center[0], graph.zones[i].center[1]]).addTo(map);
                }*/
 
-               // TODO gestion des popups
                // Affichage des accidents seul dans leur zone (avec un marker)
                for (var i = 0; i < graph.accidents.length; ++i) {
                   attachedZone = graph.zones[graph.accidents[i].zone];
@@ -432,12 +486,13 @@
                      var marker = L.marker([coord[1], coord[0]]);
 
                      markersLayer.addLayer(marker);
-
+					/*
                      var popup = L.popup()
                         .setLatLng([coord[1], coord[0]])
                         .setContent((attachedZone.stats.nbAcc).toString());
                      marker.bindPopup(popup).openPopup();
                      popup.addTo(map);
+                     */
                   }
                }
                markersLayer.addTo(map);
@@ -447,30 +502,28 @@
                      d.center[1])
                })
 
-               var color = d3.scaleQuantize()
-                  .range(["rgb(181,231,193)", "rgb(67,150,53)",
-                     "rgb(199,202,133)", "rgb(158,99,81)", "rgb(197,113,156)", "rgb(255,61,67)"
-                  ]);
-
-               color.domain([0, 400]);
-
                var features = g.selectAll("circle")
                   .data(graph.zones)
                   .enter().append("circle")
                   .style("stroke", "black")
-                  .style('fill-opacity', 0.4)
+                  .style('fill-opacity', function(d) {
+				            if (map.getZoom() < 15) {
+				                return 0.6;
+				            } else {
+				                return 0.2;
+				           }
+                   		})
                   .style("fill", function(d) {
-                     //couleur est le nombre d'accidents
-                     var value = d.stats.nbAcc;
-                     //  console.log(value)
-                     if (value) {
-                        return color(value);
-                     } else {
-                        // si pas de valeur alors en gris
-                        return "#ccc";
-                     }
-                  })
-                  .attr("r", sizeTable[map.getZoom()]);
+			          		//couleur est le nombre d'accidents
+			          		var value = d.stats.nbAcc;
+					        if (value) {
+					            return color(value);
+					        } else {
+					     		// si pas de valeur alors en gris
+					            return "#ccc";
+					       }
+			           })
+				   .attr("r", sizeTable[map.getZoom()]);
 
                map.on("viewreset", update);
                features.on('mouseenter', mouseenter);
@@ -490,7 +543,15 @@
                            map.latLngToLayerPoint(d.LatLng).x + "," +
                            map.latLngToLayerPoint(d.LatLng).y + ")";
                      })
-                  g.selectAll("circle").attr("r", sizeTable[currentZoom]);
+                  g.selectAll("circle")
+					.style('fill-opacity', function(d) {
+				            if (currentZoom < 15) {
+				                return 0.6;
+				            } else {
+				                return 0.2;
+				           }
+                   		})
+					.attr("r", sizeTable[currentZoom]);
                }
 
                function move() {
@@ -503,7 +564,14 @@
             });
 
             function mouseenter() {
-               d3.select(this).style('fill-opacity', 0.6);
+               d3.select(this).style('fill-opacity', function(d) {
+					if (currentZoom < 15) {
+						return 0.8;
+					} else {
+						return 0.4;
+				   	}
+				})
+				d3.select(this).style("stroke", "red");
 
                var props = d3.select(this).data()[0].stats;
 
@@ -534,8 +602,16 @@
             }
 
             function mouseleave() {
-               d3.select(this).style('fill-opacity', 0.4);
-            }
+               d3.select(this)
+               .style('fill-opacity', function(d) {
+					if (currentZoom < 15) {
+						return 0.6;
+					} else {
+						return 0.2;
+				   	}
+				})
+				d3.select(this).style("stroke", "black");
+			}
          }
          /*
                          hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
