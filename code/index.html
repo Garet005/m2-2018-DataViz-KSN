@@ -155,8 +155,8 @@
          <div id="date" style="float:left; margin:auto; width:70%; height:250px;">
             <h3 style="text-align:center;">Choix par un intervalle de date</h3>
             <form style="text-align:center;">
-               Date de début: <input type="date" id="beginDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01"><br> 
-               Date de fin: <input type="date" id="endDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01">
+               Date de début: <input type="date" id="beginDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01"><br> Date de fin: <input type="date"
+                  id="endDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01">
             </form>
          </div>
 
@@ -220,28 +220,28 @@
          </div>
       </div>
 
-        <div class="hover-info" style="line-height:5px;float:right; margin:auto; width:400px; height:650px; margin-bottom:50px; border:3px solid black;">
-            <h4 style="text-align:center;">Statistiques des accidents sur la zone sélectionnée</h4>
-                <h6 class="nbacc"></h6>
-                <h4 class="PersoImp"></h4>
-                <h6 class="conducteur"></h6>
-                <h6 class="passage"></h6>
-                <h6 class="pieton"></h6>
-                <h4 class="Gravite"></h4>
-                <h6 class="indem"></h6>
-                <h6 class="bl"></h6>
-                <h6 class="bh"></h6>
-                <h4 class="GensFuite"></h4>
-                <h6 class="fuite"></h6>
-                <h4 class="Vehicules"></h4>
-                <h6 class="velo"></h6>
-                <h6 class="scooter"></h6>
-                <h6 class="moto"></h6>
-                <h6 class="voiture"></h6>
-                <h6 class="vehiculeutilitaire"></h6>
-                <h6 class="buscar"></h6>
-                <h6 class="poidslourd"></h6>
-                <h6 class="tram"></h6>
+      <div class="hover-info" style="line-height:5px;float:right; margin:auto; width:400px; height:650px; margin-bottom:50px; border:3px solid black;">
+         <h4 style="text-align:center;">Statistiques des accidents sur la zone sélectionnée</h4>
+         <h6 class="nbacc"></h6>
+         <h4 class="PersoImp"></h4>
+         <h6 class="conducteur"></h6>
+         <h6 class="passage"></h6>
+         <h6 class="pieton"></h6>
+         <h4 class="Gravite"></h4>
+         <h6 class="indem"></h6>
+         <h6 class="bl"></h6>
+         <h6 class="bh"></h6>
+         <h4 class="GensFuite"></h4>
+         <h6 class="fuite"></h6>
+         <h4 class="Vehicules"></h4>
+         <h6 class="velo"></h6>
+         <h6 class="scooter"></h6>
+         <h6 class="moto"></h6>
+         <h6 class="voiture"></h6>
+         <h6 class="vehiculeutilitaire"></h6>
+         <h6 class="buscar"></h6>
+         <h6 class="poidslourd"></h6>
+         <h6 class="tram"></h6>
 
       </div>
 
@@ -250,7 +250,7 @@
 
 
       <script>
-		var bigmapheight = 650;
+         var bigmapheight = 650;
          var smallmapheight = 300;
          var mapbreakwidth = 720;
          var highzoom = 11;
@@ -315,64 +315,71 @@
             .translate([width / 2, height / 2]);
 
          var path = d3.geoPath().projection(projection);
-         
-         function getPas() {
-			currentZoom = map.getZoom();
-			console.log(currentZoom);
-			
-		}
-		
-		// Couche ou seront affiches les markers
-		var markersLayer = new L.LayerGroup();
 
-//Variables servant à l'affichage des statistiques
+         function getPas() {
+            currentZoom = map.getZoom();
+            console.log(currentZoom);
+
+         }
+
+         // Couche ou seront affiches les markers
+         var markersLayer = new L.LayerGroup();
+
+         //Variables servant à l'affichage des statistiques
          //Variable indiquant le nombre d'accidents dans la zone
          var hovernbacc = d3.select('.hover-info').select('.nbacc');
 
          //hovertitrepi = PersoImp
          var hovercond = d3.select('.hover-info').select('.conducteur'),
-                hoverpassage = d3.select('.hover-info').select('.passage'),
-                hoverpieton = d3.select('.hover-info').select('.pieton');
+            hoverpassage = d3.select('.hover-info').select('.passage'),
+            hoverpieton = d3.select('.hover-info').select('.pieton');
 
-        //hovertitregrav = Gravite
-        var hoverindem = d3.select('.hover-info').select('.indem'),
-        hoverbl = d3.select('.hover-info').select('.bl'),
-                hoverbh = d3.select('.hover-info').select('.bh');
+         //hovertitregrav = Gravite
+         var hoverindem = d3.select('.hover-info').select('.indem'),
+            hoverbl = d3.select('.hover-info').select('.bl'),
+            hoverbh = d3.select('.hover-info').select('.bh');
 
-        //hovertitrefuite = GensFuite
-                var hoverfuite = d3.select('.hover-info').select('.fuite');
+         //hovertitrefuite = GensFuite
+         var hoverfuite = d3.select('.hover-info').select('.fuite');
 
-        //hovertitrevehicules = Vehicules
-        var hovervelo = d3.select('.hover-info').select('.velo'),
-                hoverscooter = d3.select('.hover-info').select('.scooter'),
-                hovermoto = d3.select('.hover-info').select('.moto'),
-                hovervoiture = d3.select('.hover-info').select('.voiture'),
-                hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
-                hoverbuscar = d3.select('.hover-info').select('.buscar'),
-                hoverpoidslourd = d3.select('.hover-info').select('.poidslourd'),
-                hovertram = d3.select('.hover-info').select('.tram');
+         //hovertitrevehicules = Vehicules
+         var hovervelo = d3.select('.hover-info').select('.velo'),
+            hoverscooter = d3.select('.hover-info').select('.scooter'),
+            hovermoto = d3.select('.hover-info').select('.moto'),
+            hovervoiture = d3.select('.hover-info').select('.voiture'),
+            hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
+            hoverbuscar = d3.select('.hover-info').select('.buscar'),
+            hoverpoidslourd = d3.select('.hover-info').select('.poidslourd'),
+            hovertram = d3.select('.hover-info').select('.tram');
 
          //Variables servant a afficher le titre des sections des statistiques
          var hovertitrepi = d3.select('.hover-info').select('.PersoImp'),
-                hovertitregrav = d3.select('.hover-info').select('.Gravite'),
-                hovertitrefuite = d3.select('.hover-info').select('.GensFuite'),
-                hovertitrevehicules = d3.select('.hover-info').select('.Vehicules');
+            hovertitregrav = d3.select('.hover-info').select('.Gravite'),
+            hovertitrefuite = d3.select('.hover-info').select('.GensFuite'),
+            hovertitrevehicules = d3.select('.hover-info').select('.Vehicules');
 
-		// Gestion de la taille des cercles en fonction du niveau de zoom
-		var sizeTable = {"11": 7, "12": 14, "13": 28, "14": 56, "15": 112, "16": 224, "17": 448, "18": 896}; 
-		
-
+         // Gestion de la taille des cercles en fonction du niveau de zoom
+         var sizeTable = {
+            "11": 7,
+            "12": 14,
+            "13": 28,
+            "14": 56,
+            "15": 112,
+            "16": 224,
+            "17": 448,
+            "18": 896
+         };
 
          ///*******************************************///
          ///********** Partie Visualisation ***********///
          ///*******************************************///
 
          function visualisation(parameters) {
-         	// On efface le precedent svg
-			d3.select("svg").remove();
-			// On efface les anciens markers
-			markersLayer.clearLayers();
-         	
+            // On efface le precedent svg
+            d3.select("svg").remove();
+            // On efface les anciens markers
+            markersLayer.clearLayers();
+
             d3.json("data/accidentologie-paris.geojson", function(data) {
 
                console.log(data.features);
@@ -416,110 +423,126 @@
                }*/
 
                // TODO gestion des popups
-				// Affichage des accidents seul dans leur zone (avec un marker)
-				for(var i = 0; i < graph.accidents.length; ++i) {
-					attachedZone = graph.zones[graph.accidents[i].zone];
-					if(attachedZone.stats.nbAcc == 1) {
-						coord = graph.accidents[i].accident.geometry.coordinates;
-						
-						var marker = L.marker([coord[1], coord[0]]);
-							
-						markersLayer.addLayer(marker);
-						
-						var popup = L.popup()
-							.setLatLng([coord[1], coord[0]])
-							.setContent((attachedZone.stats.nbAcc).toString());
-						marker.bindPopup(popup).openPopup();
-						popup.addTo(map);
-					}
-				}
-				markersLayer.addTo(map);
+               // Affichage des accidents seul dans leur zone (avec un marker)
+               for (var i = 0; i < graph.accidents.length; ++i) {
+                  attachedZone = graph.zones[graph.accidents[i].zone];
+                  if (attachedZone.stats.nbAcc == 1) {
+                     coord = graph.accidents[i].accident.geometry.coordinates;
 
+                     var marker = L.marker([coord[1], coord[0]]);
+
+                     markersLayer.addLayer(marker);
+
+                     var popup = L.popup()
+                        .setLatLng([coord[1], coord[0]])
+                        .setContent((attachedZone.stats.nbAcc).toString());
+                     marker.bindPopup(popup).openPopup();
+                     popup.addTo(map);
+                  }
+               }
+               markersLayer.addTo(map);
 
                graph.zones.forEach(function(d) {
                   d.LatLng = new L.LatLng(d.center[0],
                      d.center[1])
                })
 
+               var color = d3.scaleQuantize()
+                  .range(["rgb(181,231,193)", "rgb(67,150,53)",
+                     "rgb(199,202,133)", "rgb(158,99,81)", "rgb(197,113,156)", "rgb(255,61,67)"
+                  ]);
+
+               color.domain([0, 400]);
+
                var features = g.selectAll("circle")
                   .data(graph.zones)
                   .enter().append("circle")
                   .style("stroke", "black")
-                  .style('fill-opacity', 0.2)
-                  .style("fill", "red")
+                  .style('fill-opacity', 0.4)
+                  .style("fill", function(d) {
+                     //couleur est le nombre d'accidents
+                     var value = d.stats.nbAcc;
+                     //  console.log(value)
+                     if (value) {
+                        return color(value);
+                     } else {
+                        // si pas de valeur alors en gris
+                        return "#ccc";
+                     }
+                  })
                   .attr("r", sizeTable[map.getZoom()]);
 
                map.on("viewreset", update);
                features.on('mouseenter', mouseenter);
                features.on('mouseleave', mouseleave);
                update();
-               
+
                map.on('move', function() {
-					move();
-				});
-				move();
+                  move();
+               });
+               move();
 
                function update() {
-					currentZoom = map.getZoom();
-					features.attr("transform",
-					 function(d) {
-						return "translate(" +
-						   map.latLngToLayerPoint(d.LatLng).x + "," +
-						   map.latLngToLayerPoint(d.LatLng).y + ")";
-					 })
-					g.selectAll("circle").attr("r", sizeTable[currentZoom]);
+                  currentZoom = map.getZoom();
+                  features.attr("transform",
+                     function(d) {
+                        return "translate(" +
+                           map.latLngToLayerPoint(d.LatLng).x + "," +
+                           map.latLngToLayerPoint(d.LatLng).y + ")";
+                     })
+                  g.selectAll("circle").attr("r", sizeTable[currentZoom]);
                }
-               
+
                function move() {
-					var bounds = map.getBounds();
-					var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
-					var bottomRight = map.latLngToLayerPoint(bounds.getSouthEast());
-					g.attr('transform', 'translate('+ -topLeft.x + ',' + -topLeft.y + ')');
-				}
-				
+                  var bounds = map.getBounds();
+                  var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
+                  var bottomRight = map.latLngToLayerPoint(bounds.getSouthEast());
+                  g.attr('transform', 'translate(' + -topLeft.x + ',' + -topLeft.y + ')');
+               }
+
             });
 
             function mouseenter() {
-               d3.select(this).style('fill-opacity', 0.4);
+               d3.select(this).style('fill-opacity', 0.6);
 
                var props = d3.select(this).data()[0].stats;
 
-               hovernbacc.html( props.nbAcc !== 0 ? '<label>nombre d\'accidents</label> : ' + props.nbAcc : '')
-               
-               hovertitrepi.html( (props.Voiture !== 0 || props.Passage !== 0 || props.Pieton !== 0) ? '<label>Types de personnes impliquées : \n</label>' : '')
-               hovercond.html( props.Conducteur !== 0 ? '<label>Conducteurs</label> : ' + props.Conducteur : '')
-               hoverpassage.html( props.Passage !== 0 ? '<label>Passagers</label> : ' + props.Passage : '')
-               hoverpieton.html( props.Pieton !== 0 ? '<label>Piétons</label> : ' + props.Pieton : '')
-               
-               hovertitregrav.html( (props.Indem !== 0 || props.BH !== 0 || props.BL !== 0) ? '<label>Types de blessés : \n</label>' : '')
-               hoverindem.html( props.Indem !== 0 ? '<label>Personnes indemnes</label> : ' + props.Indem : '')
-               hoverbl.html( props.BL !== 0 ? '<label>Blessés légers</label> : ' + props.BL : '')
-               hoverbh.html( props.BH !== 0 ? '<label>Blessés hospitalisés </label> : ' + props.BH  : '')
-               
-               hovertitrefuite.html( props.Fuite !== 0 ? '<label>Fuite du\ des lieux d\'accidents : \n</label>' : '')
-               hoverfuite.html( props.Fuite !== 0 ? '<label>Fuites</label> : ' + props.Fuite : '')
-               
-               hovertitrevehicules.html( props.Voiture !== 0 ? '<label>Types de véhicules impliqués</label> : \n' : '')
-               hovervelo.html( props.Velo !== 0 ? '<label>Vélos</label> : ' + props.Velo : '')
-               hoverscooter.html( props.Scooter !== 0 ? '<label>Scooters</label> : ' + props.Scooter : '')
-               hovermoto.html( props.Moto !== 0 ? '<label>Motos</label> : ' + props.Moto : '')
-               hovervoiture.html( props.Voiture !== 0 ? '<label>Voitures</label> : ' + props.Voiture : '')
-               hovervehiutil.html( props.VehiculeUtilitaire !== 0 ? '<label>Véhicules utilitaires</label> : ' + props.VehiculeUtilitaire : '')
-               hoverbuscar.html( props.BusCar !== 0 ? '<label>Bus / Car</label> : ' + props.BusCar : '')
-               hoverpoidslourd.html( props.PoidsLourd !== 0 ? '<label>Poids lourds</label> : ' + props.PoidsLourd : '')
-               hovertram.html( props.Tram !== 0 ? '<label>Trams</label> : ' + props.Tram : '')
+               hovernbacc.html(props.nbAcc !== 0 ? '<label>nombre d\'accidents</label> : ' + props.nbAcc : '')
+
+               hovertitrepi.html((props.Voiture !== 0 || props.Passage !== 0 || props.Pieton !== 0) ? '<label>Types de personnes impliquées : \n</label>' : '')
+               hovercond.html(props.Conducteur !== 0 ? '<label>Conducteurs</label> : ' + props.Conducteur : '')
+               hoverpassage.html(props.Passage !== 0 ? '<label>Passagers</label> : ' + props.Passage : '')
+               hoverpieton.html(props.Pieton !== 0 ? '<label>Piétons</label> : ' + props.Pieton : '')
+
+               hovertitregrav.html((props.Indem !== 0 || props.BH !== 0 || props.BL !== 0) ? '<label>Types de blessés : \n</label>' : '')
+               hoverindem.html(props.Indem !== 0 ? '<label>Personnes indemnes</label> : ' + props.Indem : '')
+               hoverbl.html(props.BL !== 0 ? '<label>Blessés légers</label> : ' + props.BL : '')
+               hoverbh.html(props.BH !== 0 ? '<label>Blessés hospitalisés </label> : ' + props.BH : '')
+
+               hovertitrefuite.html(props.Fuite !== 0 ? '<label>Fuite du\ des lieux d\'accidents : \n</label>' : '')
+               hoverfuite.html(props.Fuite !== 0 ? '<label>Fuites</label> : ' + props.Fuite : '')
+
+               hovertitrevehicules.html(props.Voiture !== 0 ? '<label>Types de véhicules impliqués</label> : \n' : '')
+               hovervelo.html(props.Velo !== 0 ? '<label>Vélos</label> : ' + props.Velo : '')
+               hoverscooter.html(props.Scooter !== 0 ? '<label>Scooters</label> : ' + props.Scooter : '')
+               hovermoto.html(props.Moto !== 0 ? '<label>Motos</label> : ' + props.Moto : '')
+               hovervoiture.html(props.Voiture !== 0 ? '<label>Voitures</label> : ' + props.Voiture : '')
+               hovervehiutil.html(props.VehiculeUtilitaire !== 0 ? '<label>Véhicules utilitaires</label> : ' + props.VehiculeUtilitaire : '')
+               hoverbuscar.html(props.BusCar !== 0 ? '<label>Bus / Car</label> : ' + props.BusCar : '')
+               hoverpoidslourd.html(props.PoidsLourd !== 0 ? '<label>Poids lourds</label> : ' + props.PoidsLourd : '')
+               hovertram.html(props.Tram !== 0 ? '<label>Trams</label> : ' + props.Tram : '')
             }
 
             function mouseleave() {
-               d3.select(this).style('fill-opacity', 0.2);
+               d3.select(this).style('fill-opacity', 0.4);
             }
          }
-/*
-                hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
-                hoverbuscar = d3.select('.hover-info').select('.buscar'),
-                hoverpoidslourd = d3.select('.hover-info').select('.poidslourd'),
-                hovertram = d3.select('.hover-info').select('.tram');
-*/
+         /*
+                         hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
+                         hoverbuscar = d3.select('.hover-info').select('.buscar'),
+                         hoverpoidslourd = d3.select('.hover-info').select('.poidslourd'),
+                         hovertram = d3.select('.hover-info').select('.tram');
+         */
       </script>
    </body>
 
