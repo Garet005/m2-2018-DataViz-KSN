@@ -2,11 +2,11 @@
 
 ## Objectifs de la semaine : 
 * définition du groupe/des objectifs
-* Recherches préliminaires de base de données et de documentations pour préparer le projet cf ; README.md
+* Recherches préliminaires de base de données et de documentations pour préparer le projet cf : README.md
 
 ### Jeu de données :
 
-Pour notre jeu de données, nous avons hésité plusieurs jours entre ; 
+Pour notre jeu de données, nous avons hésité plusieurs jours entre :
 * Travailler sur des données de la SNCF
 * Travailler sur des données du Grand Lyon
 * Travailler sur des données de Paris
@@ -16,12 +16,12 @@ Nous sommes donc partis sur les données du Grand Lyon, mais nous nous sommes vi
 
 ### Vue Globale : 
 
-Pour la vue globale, nous nous sommes accordés sur ;
-* Créer un Layout permettant de visualiser Paris et les lieux des accidents tout en permettant de choisir ; date et arrondissement.
+Pour la vue globale, nous nous sommes accordés sur :
+* Créer un Layout permettant de visualiser Paris et les lieux des accidents tout en permettant de choisir : date et arrondissement.
 
 ### Vue Focus :
 
-Pour la vue Focus, nous nous sommes accordés sur ;
+Pour la vue Focus, nous nous sommes accordés sur :
 * Créer un focus sur une "bulle" d'accidents pour avoir une localisation plus précise ainsi que des renseignements complémentaires concernant les accidents
 
 
@@ -51,20 +51,10 @@ plus précise et plus adaptée à nos besoins.
 
 ## Objectifs de la semaine :
 
-* 
-
-## Peer reviewing :
-
-## Bases techniques :
+* Peer reviewing
 
 -----
-# Rapport de la semaine du 11 décembre au 17 décembre 2017
 
-## Objectifs de la semaine :
-
-## Modifier les données :
-
------
 # Rapport de la semaine du 18 décembre au 24 décembre 2017
 
 ## Objectifs de la semaine :
@@ -124,7 +114,8 @@ plus précise et plus adaptée à nos besoins.
 * Afficher les zones sous la forme d'un polygone (une aire) afin d'obtenir un recouvrement correct des accidents dans une zones (pas résolus).
 
 -----
-###Validation du cahier d'avancement
+
+## Validation du cahier d'avancement
 
 | Etudiant | Action |
 | --- | ------ |
