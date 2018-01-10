@@ -1,1 +1,657 @@
-My Page
+<!DOCTYPE html>
+<html>
+
+   <head>
+      <title>Accidentologie Paris</title>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+      <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+      <link rel="stylesheet" href="/resources/demos/style.css">
+
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css">
+
+      <!-- CSS importé puis modifié localement -->
+      <link rel="stylesheet" href="./css/style.css">
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <!-- Scripts locaux -->
+      <script src="./js/interface.js"></script>
+      <script src="./js/accidentologie.js"></script>
+      <!-- include cartodb.js library -->
+      <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+
+      <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+
+   </head>
+
+   <body>
+      <div style="height:750px;">
+         <div class="container">
+            <h3 style="text-align:center;">Choix du filtrage des dates</h3>
+            <ul>
+               <li>
+                  <input type="radio" id="intervalle" name="selector" checked="true" onclick="show()">
+                  <label for="intervalle">Par un intervalle de date</label>
+                  <div class="check"></div>
+               </li>
+               <li>
+                  <input type="radio" id="multiple" name="selector" onclick="show()">
+                  <label for="multiple">Choix multiple Années/Mois/Jours</label>
+                  <div class="check">
+                     <div class="inside"></div>
+                  </div>
+               </li>
+            </ul>
+         </div>
+
+         <div class="widget" id="year" style="float:left; width:20%; height:200px; visibility:hidden; display:none;">
+            <h3 style="text-align:center;">Choix multiple par Années/Mois/Jours</h3>
+            <fieldset style="margin:auto; width:70px; height:80px;">
+               <legend>Années : </legend>
+               <label for="checkbox-2012">2012</label>
+               <input type="checkbox" id="checkbox-2012" class="years" value="2012">
+               <label for="checkbox-2013">2013</label>
+               <input type="checkbox" id="checkbox-2013" class="years" value="2013">
+            </fieldset>
+         </div>
+         <div class="widget" id="month" style="float:left; width:50%; height:200px; padding-top:50px; visibility:hidden; display:none;">
+            <fieldset style="margin:auto; width:390px; height:120px;">
+               <legend>Mois : </legend>
+               <label for="checkbox-Janvier">Janvier</label>
+               <input type="checkbox" id="checkbox-Janvier" class="months" value="01">
+               <label for="checkbox-Fevrier">Février</label>
+               <input type="checkbox" id="checkbox-Fevrier" class="months" value="02">
+               <label for="checkbox-Mars">Mars</label>
+               <input type="checkbox" id="checkbox-Mars" class="months" value="03">
+               <label for="checkbox-Avril">Avril</label>
+               <input type="checkbox" id="checkbox-Avril" class="months" value="04">
+               <label for="checkbox-Mai">Mai</label>
+               <input type="checkbox" id="checkbox-Mai" class="months" value="05">
+               <label for="checkbox-Juin">Juin</label>
+               <input type="checkbox" id="checkbox-Juin" class="months" value="06">
+               <label for="checkbox-Juillet">Juillet</label>
+               <input type="checkbox" id="checkbox-Juillet" class="months" value="07">
+               <label for="checkbox-Aout">Août</label>
+               <input type="checkbox" id="checkbox-Aout" class="months" value="08">
+               <label for="checkbox-Septembre">Septembre</label>
+               <input type="checkbox" id="checkbox-Septembre" class="months" value="09">
+               <label for="checkbox-Octobre">Octobre</label>
+               <input type="checkbox" id="checkbox-Octobre" class="months" value="10">
+               <label for="checkbox-Novembre">Novembre</label>
+               <input type="checkbox" id="checkbox-Novembre" class="months" value="11">
+               <label for="checkbox-Decembre">Décembre</label>
+               <input type="checkbox" id="checkbox-Decembre" class="months" value="12">
+            </fieldset>
+         </div>
+         <div class="widget" id="day" style="float:left; margin-left:30%; width:70%; height:200px; visibility:hidden; display:none;">
+            <fieldset style="margin:auto; width:450px; height:150px;">
+               <legend>Jours : </legend>
+               <label for="checkbox-01">01</label>
+               <input type="checkbox" id="checkbox-01" class="days" value="01">
+               <label for="checkbox-02">02</label>
+               <input type="checkbox" id="checkbox-02" class="days" value="02">
+               <label for="checkbox-03">03</label>
+               <input type="checkbox" id="checkbox-03" class="days" value="03">
+               <label for="checkbox-04">04</label>
+               <input type="checkbox" id="checkbox-04" class="days" value="04">
+               <label for="checkbox-05">05</label>
+               <input type="checkbox" id="checkbox-05" class="days" value="05">
+               <label for="checkbox-06">06</label>
+               <input type="checkbox" id="checkbox-06" class="days" value="06">
+               <label for="checkbox-07">07</label>
+               <input type="checkbox" id="checkbox-07" class="days" value="07">
+               <label for="checkbox-08">08</label>
+               <input type="checkbox" id="checkbox-08" class="days" value="08">
+               <label for="checkbox-09">09</label>
+               <input type="checkbox" id="checkbox-09" class="days" value="09">
+               <label for="checkbox-10">10</label>
+               <input type="checkbox" id="checkbox-10" class="days" value="10">
+               <label for="checkbox-11">11</label>
+               <input type="checkbox" id="checkbox-11" class="days" value="11">
+               <label for="checkbox-12">12</label>
+               <input type="checkbox" id="checkbox-12" class="days" value="12">
+               <label for="checkbox-13">13</label>
+               <input type="checkbox" id="checkbox-13" class="days" value="13">
+               <label for="checkbox-14">14</label>
+               <input type="checkbox" id="checkbox-14" class="days" value="14">
+               <label for="checkbox-15">15</label>
+               <input type="checkbox" id="checkbox-15" class="days" value="15">
+               <label for="checkbox-16">16</label>
+               <input type="checkbox" id="checkbox-16" class="days" value="16">
+               <label for="checkbox-17">17</label>
+               <input type="checkbox" id="checkbox-17" class="days" value="17">
+               <label for="checkbox-18">18</label>
+               <input type="checkbox" id="checkbox-18" class="days" value="18">
+               <label for="checkbox-19">19</label>
+               <input type="checkbox" id="checkbox-19" class="days" value="19">
+               <label for="checkbox-20">20</label>
+               <input type="checkbox" id="checkbox-20" class="days" value="20">
+               <label for="checkbox-21">21</label>
+               <input type="checkbox" id="checkbox-21" class="days" value="21">
+               <label for="checkbox-22">22</label>
+               <input type="checkbox" id="checkbox-22" class="days" value="22">
+               <label for="checkbox-23">23</label>
+               <input type="checkbox" id="checkbox-23" class="days" value="23">
+               <label for="checkbox-24">24</label>
+               <input type="checkbox" id="checkbox-24" class="days" value="24">
+               <label for="checkbox-25">25</label>
+               <input type="checkbox" id="checkbox-25" class="days" value="25">
+               <label for="checkbox-26">26</label>
+               <input type="checkbox" id="checkbox-26" class="days" value="26">
+               <label for="checkbox-27">27</label>
+               <input type="checkbox" id="checkbox-27" class="days" value="27">
+               <label for="checkbox-28">28</label>
+               <input type="checkbox" id="checkbox-28" class="days" value="28">
+               <label for="checkbox-29">29</label>
+               <input type="checkbox" id="checkbox-29" class="days" value="29">
+               <label for="checkbox-30">30</label>
+               <input type="checkbox" id="checkbox-30" class="days" value="30">
+               <label for="checkbox-31">31</label>
+               <input type="checkbox" id="checkbox-31" class="days" value="31">
+            </fieldset>
+         </div>
+
+         <div id="date" style="float:left; margin:auto; width:70%; height:250px;">
+            <h3 style="text-align:center;">Choix par un intervalle de date</h3>
+            <form style="text-align:center;">
+               Date de début: <input type="date" id="beginDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01"><br> Date de fin: <input type="date"
+                  id="endDate" class="dates" min="2012-01-01" max="2013-12-31" value="2012-01-01">
+            </form>
+         </div>
+
+         <div class="widget" id="arrondissement" style="float:left; margin-top:20px; width:50%; height:250px;">
+            <h3 style="text-align:center;">Choix multiple des arrondissements</h3>
+            <fieldset style="margin:auto; width:400px; height:120px;">
+               <legend>Arrondissements : </legend>
+               <label for="checkbox-A01">01</label>
+               <input type="checkbox" id="checkbox-A01" class="arrondissements" value="75001">
+               <label for="checkbox-A02">02</label>
+               <input type="checkbox" id="checkbox-A02" class="arrondissements" value="75002">
+               <label for="checkbox-A03">03</label>
+               <input type="checkbox" id="checkbox-A03" class="arrondissements" value="75003">
+               <label for="checkbox-A04">04</label>
+               <input type="checkbox" id="checkbox-A04" class="arrondissements" value="75004">
+               <label for="checkbox-A05">05</label>
+               <input type="checkbox" id="checkbox-A05" class="arrondissements" value="75005">
+               <label for="checkbox-A06">06</label>
+               <input type="checkbox" id="checkbox-A06" class="arrondissements" value="75006">
+               <label for="checkbox-A07">07</label>
+               <input type="checkbox" id="checkbox-A07" class="arrondissements" value="75007">
+               <label for="checkbox-A08">08</label>
+               <input type="checkbox" id="checkbox-A08" class="arrondissements" value="75008">
+               <label for="checkbox-A09">09</label>
+               <input type="checkbox" id="checkbox-A09" class="arrondissements" value="75009">
+               <label for="checkbox-A10">10</label>
+               <input type="checkbox" id="checkbox-A10" class="arrondissements" value="75010">
+               <label for="checkbox-A11">11</label>
+               <input type="checkbox" id="checkbox-A11" class="arrondissements" value="75011">
+               <label for="checkbox-A12">12</label>
+               <input type="checkbox" id="checkbox-A12" class="arrondissements" value="75012">
+               <label for="checkbox-A13">13</label>
+               <input type="checkbox" id="checkbox-A13" class="arrondissements" value="75013">
+               <label for="checkbox-A14">14</label>
+               <input type="checkbox" id="checkbox-A14" class="arrondissements" value="75014">
+               <label for="checkbox-A15">15</label>
+               <input type="checkbox" id="checkbox-A15" class="arrondissements" value="75015">
+               <label for="checkbox-A16">16</label>
+               <input type="checkbox" id="checkbox-A16" class="arrondissements" value="75016">
+               <label for="checkbox-A17">17</label>
+               <input type="checkbox" id="checkbox-A17" class="arrondissements" value="75017">
+               <label for="checkbox-A18">18</label>
+               <input type="checkbox" id="checkbox-A18" class="arrondissements" value="75018">
+               <label for="checkbox-A19">19</label>
+               <input type="checkbox" id="checkbox-A19" class="arrondissements" value="75019">
+               <label for="checkbox-A20">20</label>
+               <input type="checkbox" id="checkbox-A20" class="arrondissements" value="75020">
+            </fieldset>
+         </div>
+
+         <div id="heure" style="float:right; width:50%; height:150px; margin-top:20px;">
+            <h3 style="text-align:center;">Choix d'un intervalle d'heure</h3>
+            <form style="text-align:center;">
+               Heure de début: <input type="time" id="beginHour" class="hours">
+               <br /> Heure de fin: <input type="time" id="endHour" class="hours">
+            </form>
+         </div>
+
+         <div style="float:right; width:50%; text-align:center; margin-top:20px;">
+            <input type="button" value="Visualiser" onclick="processForm()" style="border-radius:8px; padding:12px 28px; font-size:16px;" />
+         </div>
+      </div>
+
+      <div class="hover-info" style="line-height:5px; float:left; margin:auto; width:400px; height:650px; margin-bottom:50px; margin-left:50px; border:3px solid black;">
+         <h4 style="text-align:center;">Statistiques des accidents sur la zone sélectionnée</h4>
+         <h6 class="nbacc"></h6>
+         <h4 class="PersoImp"></h4>
+         <h6 class="conducteur"></h6>
+         <h6 class="passage"></h6>
+         <h6 class="pieton"></h6>
+         <h4 class="Gravite"></h4>
+         <h6 class="indem"></h6>
+         <h6 class="bl"></h6>
+         <h6 class="bh"></h6>
+         <h4 class="GensFuite"></h4>
+         <h6 class="fuite"></h6>
+         <h4 class="Vehicules"></h4>
+         <h6 class="velo"></h6>
+         <h6 class="scooter"></h6>
+         <h6 class="moto"></h6>
+         <h6 class="voiture"></h6>
+         <h6 class="vehiculeutilitaire"></h6>
+         <h6 class="buscar"></h6>
+         <h6 class="poidslourd"></h6>
+         <h6 class="tram"></h6>
+
+      </div>
+
+      <div id="map" style="float:left; width:960px; height:650px; border:3px solid black;"></div>
+      
+      <div id="legend" style="float:left; margin-bottom:100px; width:962px; height:100px; border:2px solid black;"></div>
+
+
+      <script>
+         var bigmapheight = 650;
+         var smallmapheight = 300;
+         var mapbreakwidth = 720;
+         var highzoom = 11;
+         var lowzoom = 7;
+         var initzoom;
+         //		var vizjson = 'https://mediafin.cartodb.com/api/v2/viz/6a800846-5607-11e5-b2d0-0e4fddd5de28/viz.json';
+
+         //Set initial mapheight, based on the calculated width of the map container
+         if ($("#map").width() > mapbreakwidth) {
+            initzoom = highzoom;
+            $("#map").height(bigmapheight);
+         } else {
+            initzoom = lowzoom;
+            $("#map").height(smallmapheight);
+         };
+
+         var map = new L.Map('map', {
+            center: [48.85841, 2.3488],
+            zoom: initzoom,
+            minZoom: 11
+         });
+
+         var basemap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+         }).addTo(map).setZIndex(0);
+
+         cartodb.createLayer(map, vizjson)
+            .addTo(map)
+            .on('done', function(layer) {
+               layer.setInteraction(true);
+
+               layer.on('error', function(err) {
+                  cartodb.log.log('error: ' + err);
+               });
+            })
+            .on('error', function() {
+               cartodb.log.log("some error occurred");
+            });
+
+         //Use Leaflets resize event to set new map height and zoom level
+         map.on('resize', function(e) {
+            if (e.newSize.x < mapbreakwidth) {
+               map.setZoom(lowzoom);
+               $("#map").css('height', smallmapheight);
+            };
+
+            if (e.newSize.x > mapbreakwidth) {
+               map.setZoom(highzoom);
+               $("#map").css('height', bigmapheight);
+               $("#map").css('height', bigmapheight);
+            };
+         });
+
+         /* Initialize the SVG layer */
+         map._initPathRoot();
+
+         var width = 960,
+            height = 650;
+
+         var projection = d3.geoMercator()
+            .scale((width - 3) / (2 * Math.PI))
+            .translate([width / 2, height / 2]);
+
+         var path = d3.geoPath().projection(projection);
+
+         function getPas() {
+            currentZoom = map.getZoom();
+            console.log(currentZoom);
+
+         }
+
+         //Variables servant à l'affichage des statistiques
+         //Variable indiquant le nombre d'accidents dans la zone
+         var hovernbacc = d3.select('.hover-info').select('.nbacc');
+
+         //hovertitrepi = PersoImp
+         var hovercond = d3.select('.hover-info').select('.conducteur'),
+            hoverpassage = d3.select('.hover-info').select('.passage'),
+            hoverpieton = d3.select('.hover-info').select('.pieton');
+
+         //hovertitregrav = Gravite
+         var hoverindem = d3.select('.hover-info').select('.indem'),
+            hoverbl = d3.select('.hover-info').select('.bl'),
+            hoverbh = d3.select('.hover-info').select('.bh');
+
+         //hovertitrefuite = GensFuite
+         var hoverfuite = d3.select('.hover-info').select('.fuite');
+
+         //hovertitrevehicules = Vehicules
+         var hovervelo = d3.select('.hover-info').select('.velo'),
+            hoverscooter = d3.select('.hover-info').select('.scooter'),
+            hovermoto = d3.select('.hover-info').select('.moto'),
+            hovervoiture = d3.select('.hover-info').select('.voiture'),
+            hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
+            hoverbuscar = d3.select('.hover-info').select('.buscar'),
+            hoverpoidslourd = d3.select('.hover-info').select('.poidslourd'),
+            hovertram = d3.select('.hover-info').select('.tram');
+
+         //Variables servant a afficher le titre des sections des statistiques
+         var hovertitrepi = d3.select('.hover-info').select('.PersoImp'),
+            hovertitregrav = d3.select('.hover-info').select('.Gravite'),
+            hovertitrefuite = d3.select('.hover-info').select('.GensFuite'),
+            hovertitrevehicules = d3.select('.hover-info').select('.Vehicules');
+
+         // Gestion de la taille des cercles en fonction du niveau de zoom
+         var sizeTable = {
+            "11": 7,
+            "12": 14,
+            "13": 28,
+            "14": 56,
+            "15": 112,
+            "16": 224,
+            "17": 448,
+            "18": 896
+         };
+         
+         
+         /*** On dessine la legende ***/
+		 // 7 couleurs
+		 var colors = ["rgb(130, 224, 170)", "rgb(80, 255, 51)", "rgb(172, 203, 46  )", "rgb(246, 255, 51)", "rgb(230, 126, 34)", "rgb(192, 57, 43)", "rgb(100, 30, 22)"];
+		
+		 var color = d3.scaleQuantize()
+					.range(colors);
+         color.domain([0,700]);
+         
+         d3.select("#legend")
+			 .append("p")
+			 .text("Légende :")
+			 .style("float", "left")
+			 .style("width", "150px")
+			 .style("font-weight", "bold")
+			 .style("margin-top", "10px")
+			 .style("margin-left", "30px")
+			 .style("margin-bottom", "0px");
+        
+         var legendSvg = d3.select("#legend")
+        	.append("svg")
+    		.style("height", "30px")
+	    	.style("width", "750px")
+	    	.style("margin-left", "163px");
+	    
+	     // taille des rectangles
+	     var w = [100, 200, 300, 400, 500, 600, 750];
+         for(var i = colors.length-1; i >= 0; --i) {
+    	 	legendSvg.append("rect")
+		    	.style("height", "30px")
+		    	.style("width", w[i])
+		    	.style("fill", colors[i]);
+         }
+        
+    	 d3.select("#legend")
+			 .append("p")
+			 .text("Nombre d'accident")
+			 .style("float", "left")
+			 .style("width", "150px")
+			 .style("margin-top", "0px")
+			 .style("margin-left", "30px");
+    	
+    	 for(var i = -1; i < colors.length-1; ++i) {
+			 d3.select("#legend")
+			 .append("p")
+			 .text(function() { if(i == -1) { return 0; } else { return w[i]; } })
+			 .style("float", "left")
+			 .style("width", function() { if(i == -1) { return "90px"; } else { return "100px"; } })
+			 .style("margin-top", "0px")
+         }
+		 /*********************************/
+
+
+
+         ///*******************************************///
+         ///********** Partie Visualisation ***********///
+         ///*******************************************///
+
+         function visualisation(parameters) {
+            // On efface le precedent svg
+			//d3.selectAll("svg").remove();
+            // On efface les anciens markers
+            //markersLayer.clearLayers();
+
+            d3.json("data/accidentologie-paris.geojson", function(data) {
+
+               console.log(data.features);
+
+               // Contient la liste des centres de chaque zone ainsi que leurs statistiques
+               // zones = [ {id; center: [0]->x, [1]->y; stats: { nbAcc, Indem, BL, BH } } ]
+               zones = [];
+
+               // Contient la liste des accidents classe par zone
+               // liste_accidents = [ {zone: id; accident: detail} ]
+               liste_accidents = [];
+
+               // Test 1 (filtrage par un intervalle de date)
+               //getZones(data.features, 0.01, [75020, 75013], ["2013"], ["04","10"], ["07","22"], ["09:00","12:35"], ["2012-12-23", "2013-01-02"]);
+
+               // Test 2 (filtrage par annees - mois - jours en particulier)
+               //getZones(data.features, 0.01, [], ["2013","2012"], ["04"], ["07"], [], []);
+
+               // Test 3 (sans filtrage)
+               //getZones(data.features, 0.01, [], [], [], [], [], []);
+
+               // Recuperation des zones selon parameters
+               getZones(data.features, 0.01, parameters[3].arrondissements, parameters[0].years, parameters[1].months, parameters[2].days, parameters[5].hours,
+                  parameters[4].dates);
+			   
+               graph = {
+                  "zones": zones,
+                  "accidents": liste_accidents
+               };
+               console.log(graph);
+
+               // On efface le precedent svg
+               d3.select("svg").remove();
+
+               var svg = d3.select("#map").append("svg").attr('width', width).attr('height', height).style("position", "relative"),
+                  g = svg.append("g");
+
+               // Affichage des zones avec des tokens
+               /*for(var i = 0; i < graph.zones.length; ++i) {
+               	L.marker([graph.zones[i].center[0], graph.zones[i].center[1]]).addTo(map);
+               }*/
+
+               // Affichage des accidents seul dans leur zone (avec un marker)
+               /*
+               for (var i = 0; i < graph.accidents.length; ++i) {
+                  attachedZone = graph.zones[graph.accidents[i].zone];
+                  if (attachedZone.stats.nbAcc == 1) {
+                     coord = graph.accidents[i].accident.geometry.coordinates;
+
+                     var marker = L.marker([coord[1], coord[0]]);
+
+                     markersLayer.addLayer(marker);
+					
+                     var popup = L.popup()
+                        .setLatLng([coord[1], coord[0]])
+                        .setContent((attachedZone.stats.nbAcc).toString());
+                     marker.bindPopup(popup).openPopup();
+                     popup.addTo(map);
+                     
+                  }
+               }
+               markersLayer.addTo(map);
+			   */
+				
+               graph.zones.forEach(function(d) {
+                  d.LatLng = new L.LatLng(d.center[0],
+                     d.center[1])
+               })
+
+               var features = g.selectAll("circle")
+                  .data(graph.zones)
+                  .enter().append("circle")
+                  .style("stroke", "black")
+                  .style('fill-opacity', function(d) {
+				            if (map.getZoom() < 15) {
+				                return 0.6;
+				            } else {
+				                return 0.2;
+				           }
+                   		})
+                  .style("fill", function(d) {
+			          		//couleur est le nombre d'accidents
+			          		var value = d.stats.nbAcc;
+					        if (value) {
+					            return color(value);
+					        } else {
+					     		// si pas de valeur alors en gris
+					            return "#ccc";
+					       }
+			           })
+				   .attr("r", sizeTable[map.getZoom()])
+				   .on("click", function(d) {
+				   		// Verifie si on est en mode focus
+				   		if(map.getZoom() >= 15) {
+							if(d.active) {
+								d.markerLayer.clearLayers();
+								d3.select(this).style("stroke", "blue")
+								d.active = 0;
+							} else {
+								d.markerLayer = displayAccidents(d3.select(this).data()[0].id);
+								d.active = 1;
+							}
+						}
+					})
+					
+               map.on("viewreset", update);
+               features.on('mouseenter', mouseenter);
+               features.on('mouseleave', mouseleave);
+               update();
+
+               map.on('move', function() {
+                  move();
+               });
+               move();
+
+               function update() {
+                  currentZoom = map.getZoom();
+                  features.attr("transform",
+                     function(d) {
+                        return "translate(" +
+                           map.latLngToLayerPoint(d.LatLng).x + "," +
+                           map.latLngToLayerPoint(d.LatLng).y + ")";
+                     })
+                  g.selectAll("circle")
+					.style('fill-opacity', function(d) {
+				            if (currentZoom < 15) {
+				                return 0.6;
+				            } else {
+				                return 0.2;
+				           }
+                   		})
+					.attr("r", sizeTable[currentZoom]);
+               }
+
+               function move() {
+                  var bounds = map.getBounds();
+                  var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
+                  var bottomRight = map.latLngToLayerPoint(bounds.getSouthEast());
+                  g.attr('transform', 'translate(' + -topLeft.x + ',' + -topLeft.y + ')');
+               }
+
+            });
+            
+            // Affichage des accidents d'une zone sous forme de marker
+			function displayAccidents(idZone) {
+				// Couche ou seront stockes les markers de la zone
+         		var markersLayer = new L.LayerGroup();
+				for (var i = 0; i < graph.accidents.length; ++i) {
+				    attachedZone = graph.accidents[i].zone;
+				    if (attachedZone == idZone) {
+				       coord = graph.accidents[i].accident.geometry.coordinates;
+				       var marker = L.marker([coord[1], coord[0]]);
+				       markersLayer.addLayer(marker);
+				    }
+		       	}
+		   		markersLayer.addTo(map);
+		   		return markersLayer;
+			}
+
+            function mouseenter() {
+               d3.select(this).style('fill-opacity', function(d) {
+					if (currentZoom < 15) {
+						return 0.8;
+					} else {
+						return 0.4;
+				   	}
+				})
+				d3.select(this).style("stroke", "blue");	  
+
+			   // Affichage des statistiques de la zone
+               var props = d3.select(this).data()[0].stats;
+
+               hovernbacc.html(props.nbAcc !== 0 ? '<label>nombre d\'accidents</label> : ' + props.nbAcc : '')
+
+               hovertitrepi.html((props.Voiture !== 0 || props.Passage !== 0 || props.Pieton !== 0) ? '<label>Types de personnes impliquées : \n</label>' : '')
+               hovercond.html(props.Conducteur !== 0 ? '<label>Conducteurs</label> : ' + props.Conducteur : '')
+               hoverpassage.html(props.Passage !== 0 ? '<label>Passagers</label> : ' + props.Passage : '')
+               hoverpieton.html(props.Pieton !== 0 ? '<label>Piétons</label> : ' + props.Pieton : '')
+
+               hovertitregrav.html((props.Indem !== 0 || props.BH !== 0 || props.BL !== 0) ? '<label>Types de blessés : \n</label>' : '')
+               hoverindem.html(props.Indem !== 0 ? '<label>Personnes indemnes</label> : ' + props.Indem : '')
+               hoverbl.html(props.BL !== 0 ? '<label>Blessés légers</label> : ' + props.BL : '')
+               hoverbh.html(props.BH !== 0 ? '<label>Blessés hospitalisés </label> : ' + props.BH : '')
+
+               hovertitrefuite.html(props.Fuite !== 0 ? '<label>Fuite du\ des lieux d\'accidents : \n</label>' : '')
+               hoverfuite.html(props.Fuite !== 0 ? '<label>Fuites</label> : ' + props.Fuite : '')
+
+               hovertitrevehicules.html(props.Voiture !== 0 ? '<label>Types de véhicules impliqués</label> : \n' : '')
+               hovervelo.html(props.Velo !== 0 ? '<label>Vélos</label> : ' + props.Velo : '')
+               hoverscooter.html(props.Scooter !== 0 ? '<label>Scooters</label> : ' + props.Scooter : '')
+               hovermoto.html(props.Moto !== 0 ? '<label>Motos</label> : ' + props.Moto : '')
+               hovervoiture.html(props.Voiture !== 0 ? '<label>Voitures</label> : ' + props.Voiture : '')
+               hovervehiutil.html(props.VehiculeUtilitaire !== 0 ? '<label>Véhicules utilitaires</label> : ' + props.VehiculeUtilitaire : '')
+               hoverbuscar.html(props.BusCar !== 0 ? '<label>Bus / Car</label> : ' + props.BusCar : '')
+               hoverpoidslourd.html(props.PoidsLourd !== 0 ? '<label>Poids lourds</label> : ' + props.PoidsLourd : '')
+               hovertram.html(props.Tram !== 0 ? '<label>Trams</label> : ' + props.Tram : '')
+            }
+
+            function mouseleave(d) {
+               d3.select(this)
+               .style('fill-opacity', function(d) {
+					if (currentZoom < 15) {
+						return 0.6;
+					} else {
+						return 0.2;
+				   	}
+				})
+				// La bordure ne repasse en noire que si la zone n'est pas active
+				if(!d.active) {
+					d3.select(this).style("stroke", "black");
+				}
+			}
+         }
+         /*
+                         hovervehiutil = d3.select('.hover-info').select('.vehiculeutilitaire'),
+                         hoverbuscar = d3.select('.hover-info').select('.buscar'),
+                         hoverpoidslourd = d3.select('.hover-info').select('.poidslourd'),
+                         hovertram = d3.select('.hover-info').select('.tram');
+         */
+      </script>
+   </body>
+
+</html>
