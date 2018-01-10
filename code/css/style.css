@@ -146,3 +146,9 @@ input[type=radio]:checked ~ label{
 	text-decoration: none;
 	font-weight: bold;
 }
+
+/* https://wdexplorer.com/20-examples-beautiful-css-typography-design/ */
+
+h1 {
+	color: #CEF0D4; font-family: 'Rouge Script', cursive; font-size: 60px; font-weight: normal; line-height: 48px; text-align: center; text-shadow: 1px 1px 2px #082b34; 
+}
