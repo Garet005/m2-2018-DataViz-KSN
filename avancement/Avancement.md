@@ -53,9 +53,9 @@ plus précise et plus adaptée à nos besoins.
 
 * 
 
-##Peer reviewing :
+## Peer reviewing :
 
-##Bases techniques :
+## Bases techniques :
 
 -----
 # Rapport de la semaine du 8 décembre au 14 décembre 2017
