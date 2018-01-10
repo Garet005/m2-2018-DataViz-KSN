@@ -25,8 +25,6 @@ Pour la vue Focus, nous nous sommes accordés sur ;
 * Créer un focus sur une "bulle" d'accidents pour avoir une localisation plus précise ainsi que des renseignements complémentaires concernant les accidents
 
 
-### Actions possibles :
-
 ### Problèmes rencontrés :
 * Constitution du groupe légèrement laborieuse (recherche pendant un certain moment d'un troisième membre)
 * Choix du sujet peu évident, beaucoup d'idées, pas toutes réalisables, certaines trop complexes et d'autres trop simples
@@ -45,24 +43,6 @@ plus précise et plus adaptée à nos besoins.
 
 ## Problèmes rencontrés :
 * Etant de deux filières différentes (DataScience et IA), nous avons eut quelques problèmes à trouver un rythme convenant à tous et sommes encore en train de chercher à résoudre cela
-
------
-# Rapport de la semaine du 4 au 10 décembre 2017
-
-## Objectifs de la semaine :
-
-* 
-
-## Peer reviewing :
-
-## Bases techniques :
-
------
-# Rapport de la semaine du 11 décembre au 17 décembre 2017
-
-## Objectifs de la semaine :
-
-## Modifier les données :
 
 -----
 # Rapport de la semaine du 18 décembre au 24 décembre 2017
@@ -106,7 +86,7 @@ plus précise et plus adaptée à nos besoins.
 
 ## Objectifs futurs :
 
-* Terminé l'affichage des zones + afficher les accidents seuls.
+* Terminer l'affichage des zones et afficher les accidents seuls.
 * Afficher les statistiques des zones et des accidents.
 * Proposer un gradient de couleur pour les zones (pour le nombre d'accident).
 
@@ -121,7 +101,8 @@ plus précise et plus adaptée à nos besoins.
 
 ## Problèmes rencontrés :
 
-* Afficher les zones sous la forme d'un polygone (une aire) afin d'obtenir un recouvrement correct des accidents dans une zones (pas résolus).
+* Afficher les zones sous la forme d'un polygone (une aire) afin d'obtenir un recouvrement correct des accidents dans une zones (pas résolu).
+* Ajouter des bulles (pop-up) au passage de la souris sur les marqueurs de zones pour afficher les informations de l'accident en question (pas résolu).
 
 -----
 ###Validation du cahier d'avancement
