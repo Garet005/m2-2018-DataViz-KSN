@@ -52,9 +52,9 @@ function checkDaysInterval(date, interval) {
  			return 0;
 	 	}
 	}
-
+	
 	// Aucune zone ne convient, on en creer donc une nouvelle
-	zones.push({ "center": accident.properties.wgs, "stats" : { "nbAcc": 0, "Indem": 0, "BL": 0, "BH": 0, "Fuite": 0, "Conducteur": 0, "Passage": 0, "Pieton": 0, "Velo": 0, "Scooter": 0, "Moto": 0, "Voiture": 0, "VehiculeUtilitaire": 0, "BusCar": 0, "PoidsLourd": 0, "Tram": 0  } });
+	zones.push({ "id": zones.length, "active": 0, "markerLayer": null, "center": accident.properties.wgs, "stats" : { "nbAcc": 0, "Indem": 0, "BL": 0, "BH": 0, "Fuite": 0, "Conducteur": 0, "Passage": 0, "Pieton": 0, "Velo": 0, "Scooter": 0, "Moto": 0, "Voiture": 0, "VehiculeUtilitaire": 0, "BusCar": 0, "PoidsLourd": 0, "Tram": 0  } });
 	id = zones.length-1;
 	liste_accidents.push({ "zone": id, "accident": accident });
  }

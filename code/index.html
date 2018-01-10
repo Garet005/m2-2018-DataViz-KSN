@@ -323,9 +323,6 @@
 
          }
 
-         // Couche ou seront affiches les markers
-         var markersLayer = new L.LayerGroup();
-
          //Variables servant à l'affichage des statistiques
          //Variable indiquant le nombre d'accidents dans la zone
          var hovernbacc = d3.select('.hover-info').select('.nbacc');
@@ -433,14 +430,14 @@
             // On efface le precedent svg
 			//d3.selectAll("svg").remove();
             // On efface les anciens markers
-            markersLayer.clearLayers();
+            //markersLayer.clearLayers();
 
             d3.json("data/accidentologie-paris.geojson", function(data) {
 
                console.log(data.features);
 
                // Contient la liste des centres de chaque zone ainsi que leurs statistiques
-               // zones = [ {center: [0]->x, [1]->y; stats: { nbAcc, Indem, BL, BH } } ]
+               // zones = [ {id; center: [0]->x, [1]->y; stats: { nbAcc, Indem, BL, BH } } ]
                zones = [];
 
                // Contient la liste des accidents classe par zone
@@ -459,7 +456,7 @@
                // Recuperation des zones selon parameters
                getZones(data.features, 0.01, parameters[3].arrondissements, parameters[0].years, parameters[1].months, parameters[2].days, parameters[5].hours,
                   parameters[4].dates);
-
+			   
                graph = {
                   "zones": zones,
                   "accidents": liste_accidents
@@ -478,6 +475,7 @@
                }*/
 
                // Affichage des accidents seul dans leur zone (avec un marker)
+               /*
                for (var i = 0; i < graph.accidents.length; ++i) {
                   attachedZone = graph.zones[graph.accidents[i].zone];
                   if (attachedZone.stats.nbAcc == 1) {
@@ -486,17 +484,18 @@
                      var marker = L.marker([coord[1], coord[0]]);
 
                      markersLayer.addLayer(marker);
-					/*
+					
                      var popup = L.popup()
                         .setLatLng([coord[1], coord[0]])
                         .setContent((attachedZone.stats.nbAcc).toString());
                      marker.bindPopup(popup).openPopup();
                      popup.addTo(map);
-                     */
+                     
                   }
                }
                markersLayer.addTo(map);
-
+			   */
+				
                graph.zones.forEach(function(d) {
                   d.LatLng = new L.LatLng(d.center[0],
                      d.center[1])
@@ -523,8 +522,21 @@
 					            return "#ccc";
 					       }
 			           })
-				   .attr("r", sizeTable[map.getZoom()]);
-
+				   .attr("r", sizeTable[map.getZoom()])
+				   .on("click", function(d) {
+				   		// Verifie si on est en mode focus
+				   		if(map.getZoom() >= 15) {
+							if(d.active) {
+								d.markerLayer.clearLayers();
+								d3.select(this).style("stroke", "blue")
+								d.active = 0;
+							} else {
+								d.markerLayer = displayAccidents(d3.select(this).data()[0].id);
+								d.active = 1;
+							}
+						}
+					})
+					
                map.on("viewreset", update);
                features.on('mouseenter', mouseenter);
                features.on('mouseleave', mouseleave);
@@ -562,6 +574,22 @@
                }
 
             });
+            
+            // Affichage des accidents d'une zone sous forme de marker
+			function displayAccidents(idZone) {
+				// Couche ou seront stockes les markers de la zone
+         		var markersLayer = new L.LayerGroup();
+				for (var i = 0; i < graph.accidents.length; ++i) {
+				    attachedZone = graph.accidents[i].zone;
+				    if (attachedZone == idZone) {
+				       coord = graph.accidents[i].accident.geometry.coordinates;
+				       var marker = L.marker([coord[1], coord[0]]);
+				       markersLayer.addLayer(marker);
+				    }
+		       	}
+		   		markersLayer.addTo(map);
+		   		return markersLayer;
+			}
 
             function mouseenter() {
                d3.select(this).style('fill-opacity', function(d) {
@@ -571,8 +599,9 @@
 						return 0.4;
 				   	}
 				})
-				d3.select(this).style("stroke", "red");
+				d3.select(this).style("stroke", "blue");	  
 
+			   // Affichage des statistiques de la zone
                var props = d3.select(this).data()[0].stats;
 
                hovernbacc.html(props.nbAcc !== 0 ? '<label>nombre d\'accidents</label> : ' + props.nbAcc : '')
@@ -601,7 +630,7 @@
                hovertram.html(props.Tram !== 0 ? '<label>Trams</label> : ' + props.Tram : '')
             }
 
-            function mouseleave() {
+            function mouseleave(d) {
                d3.select(this)
                .style('fill-opacity', function(d) {
 					if (currentZoom < 15) {
@@ -610,7 +639,10 @@
 						return 0.2;
 				   	}
 				})
-				d3.select(this).style("stroke", "black");
+				// La bordure ne repasse en noire que si la zone n'est pas active
+				if(!d.active) {
+					d3.select(this).style("stroke", "black");
+				}
 			}
          }
          /*
