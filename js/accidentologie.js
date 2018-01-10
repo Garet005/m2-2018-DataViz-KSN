@@ -42,15 +42,32 @@ function checkDaysInterval(date, interval) {
 
  // Affecte un accident a une zone
  function affectZone(accident, rayon) {
+ 	var bestZone = -1;
+ 	var bestDist = [];
  	for(var i=0; i < zones.length; ++i) {
  		center = zones[i].center;
  		x = accident.properties.wgs[0];
  		y = accident.properties.wgs[1];
 	 	// check coordonnee en X et Y
 	 	if(x <= center[0]+rayon && x >= center[0]-rayon && y <= center[1]+rayon && y >= center[1]-rayon) {
- 			liste_accidents.push({ "zone": i, "accident": accident });
- 			return 0;
+	 		// Pas de précédente meilleur zone
+	 		if(bestZone == -1) {
+	 			bestZone = i;
+	 			bestDist = Math.sqrt(Math.pow(center[0]-x)+Math.pow(center[1]-y));
+	 		} else {	// On compare bestDist avec distCenter
+	 			distCenter = Math.sqrt(Math.pow(center[0]-x)+Math.pow(center[1]-y));
+	 			// Si la nouvelle distance est meilleur center divient best
+	 			if(distCenter < bestDist) {
+	 				bestZone = i;
+	 				bestDist = distCenter;
+	 			}
+	 		}
 	 	}
+	}
+	// Si on a trouve une zone on l'ajoute dedans
+	if(bestZone != -1) {
+		liste_accidents.push({ "zone": bestZone, "accident": accident });
+		return 0;
 	}
 	
 	// Aucune zone ne convient, on en creer donc une nouvelle
